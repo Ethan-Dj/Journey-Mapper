@@ -10,7 +10,7 @@ dotenv.config()
 
 const content_router = require("./routes/Content.js")
 
-const jsonParser = bodyParser.json({ limit: '50mb' }); // set the limit to 10 megabytes
+const jsonParser = bodyParser.json({ limit: '200mb' }); // set the limit to 10 megabytes
 
 app.use(jsonParser);
 
