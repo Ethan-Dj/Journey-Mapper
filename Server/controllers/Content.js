@@ -21,11 +21,14 @@ const _uploadImages = async(req,res) => {
         const obj = {
             "url": uploadResponse.url,
             "lat": req.body.lat,
-            "long": req.body.long
+            "long": req.body.long,
+            "journeyname": req.body.journeyname,
+            "imgtime": req.body.imgtime,
+            "userid" : 1,
         }
         uploadImages(obj)
         .then(data => {
-            res.json(data)
+            res.json({msg:"success"})
         })
         .catch(err =>
             console.log(err)
