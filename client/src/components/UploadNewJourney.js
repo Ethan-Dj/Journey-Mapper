@@ -8,6 +8,7 @@ const UploadNewJourney = (props) => {
   const [location, setLocation] = useState({})
   const [imgTime, setImgTime] = useState("")
   const [imgTimeDisplay, setImgTimeDisplay] = useState("")
+  const [name, setName] = useState("")
 
   const getLocation = (position) => {
     const lat = position.coords.latitude;
@@ -63,12 +64,13 @@ const UploadNewJourney = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (name.length !==0){
     if(!selectedImage) return
     const reader = new FileReader()
     reader.readAsDataURL(selectedImage)
     reader.onload = () => {
       uploadImage(reader.result)
-    }
+    }}
   }
 
   const uploadImage = async (base64EncodedImage) => {
@@ -81,7 +83,7 @@ const UploadNewJourney = (props) => {
       lat: location.lat,
       imgtime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
-      journeyname: "pasta",
+      journeyname: name,
       userid: 1
 
     }),
@@ -90,17 +92,27 @@ const UploadNewJourney = (props) => {
     .then(res => console.log(res))
   }
 
+  const changeText = (e) => {
+    e.preventDefault()
+    setName(e.target.value)
+  }
+
   return ( 
     <>
       <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
         <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
-        <h3 style={{fontWeight: "500"}}><u>Upload</u></h3>
+        <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
         <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
       </div>
 
+      <form style={{display: "flex", flexDirection:"column", alignItems: "center", marginTop:"20px"}}>
+        <label name="journeyName">New Journey Name: {name}</label>
+        <input style={{borderRadius:"20px", padding: "2px 10px", marginTop:"2px", width:"140px"}} type="text" name="journeyName" placeholder="Please type here..." maxLength="20" onChange={(e)=>changeText(e)}></input>
+      </form>
+
       <div>
       <form style={{display: "flex", flexDirection:"column", alignItems: "center"}}onSubmit = {(e)=> handleSubmit(e)}>
-        <label style={{marginTop:"50px", marginBottom:"25px"}}>
+        <label style={{marginTop:"20px", marginBottom:"22px"}}>
             <input type="file" name="image" onChange={(e) => display(e)} style={{ display: "none" }} />
             <span>{changeButton}</span>
         </label>
@@ -114,9 +126,10 @@ const UploadNewJourney = (props) => {
           }
         </div>
 
-        <input style={{margin:"20px"}} id="submit" type="submit" value="Add photo/video and location to journey"/>
+        <input style={{marginTop:"20px", marginBottom:"20px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
 
-        <p style={{fontSize:"12px"}}>Only photos and videos please...</p>
+        <p style={{fontSize:"12px", margin:"0"}}>Your journey must have a name...</p>
+        <p style={{fontSize:"12px", margin:"0"}}>Only upload photos and videos please...</p>
       </form>
       </div>
     </>
