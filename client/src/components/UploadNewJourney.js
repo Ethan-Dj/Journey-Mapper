@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const UploadNew = (props) => {
+const UploadNewJourney = (props) => {
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
@@ -122,4 +122,4 @@ const UploadNew = (props) => {
     </>
     )};
 
-export default UploadNew
+export default UploadNewJourney

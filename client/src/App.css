@@ -18,6 +18,21 @@ button, #submit, span {
   height: "24px"
 }
 
+video {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+video::-webkit-media-controls-timeline { display: none !important; }
+video::-webkit-media-controls-current-time-display { display: none !important; }
+video::-webkit-media-controls-time-remaining-display { display: none !important; }
+
+/* Hide the full screen button */
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+
 
 
 
