@@ -2,7 +2,7 @@ const db = require('../Database/db.js')
 
 const getAllImages = () => {
     return db("testimg") 
-    .select("id","url","lat","long")
+    .select("*")
 }
 
 const uploadImages = (value) => {

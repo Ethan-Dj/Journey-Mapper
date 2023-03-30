@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
 
 const UploadNewJourney = (props) => {
+  const navigate = useNavigate()
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
   const [location, setLocation] = useState({})
   const [imgTime, setImgTime] = useState("")
   const [imgTimeDisplay, setImgTimeDisplay] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const getLocation = (position) => {
     const lat = position.coords.latitude;
@@ -72,6 +75,8 @@ const UploadNewJourney = (props) => {
   }
 
   const uploadImage = async (base64EncodedImage) => {
+    console.log("loading")
+    setLoading(true)
     await fetch('http://localhost:3001/api/upload', {
     method: 'POST',
     body: JSON.stringify({
@@ -81,30 +86,39 @@ const UploadNewJourney = (props) => {
       lat: location.lat,
       imgTime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
-      journeyName: "name",
+      journeyName: "empty",
       userId: 1
+
     }),
     headers: {'Content-type':'application/json'}
     })
-    .then(res => console.log(res))
+    .then(res => {
+      setLoading(false)
+      navigate("/")
+      console.log(res)
+
+    })
+    
   }
 
+  if (loading == false){
   return ( 
-    <>
+    <> 
       <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
         <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
         <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
         <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
-      </div>
+      </div>      
 
-      <div>
+       <div>
       <form style={{display: "flex", flexDirection:"column", alignItems: "center"}}onSubmit = {(e)=> handleSubmit(e)}>
         <label style={{marginTop:"20px", marginBottom:"22px"}}>
             <input type="file" name="image" onChange={(e) => display(e)} style={{ display: "none" }} />
             <span>{changeButton}</span>
         </label>
+        
 
-          <div style={{width:"80vw", height: "100vw", border:"solid 2px white", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"}}>
+          <div style={{width:"80vw", height: "80vw", border:"solid 2px white", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"}}>
           {selectedImage && selectedImage.type.includes("image") && 
             <img style={{ maxWidth: "100%"}} src={`${URL.createObjectURL(selectedImage)}`} alt="Selected" />
           }
@@ -112,14 +126,24 @@ const UploadNewJourney = (props) => {
             <video autoPlay loop style={{ width: "100%",  objectFit: "cover"}} controls src={`${URL.createObjectURL(selectedImage)}`}/>
           }
         </div>
-
+        
         <input style={{marginTop:"20px", marginBottom:"20px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
-
         <p style={{fontSize:"12px", margin:"0"}}>Your journey must have a name...</p>
         <p style={{fontSize:"12px", margin:"0"}}>Only upload photos and videos please...</p>
       </form>
       </div>
+
     </>
-    )};
+    )} else {
+      return(
+      <>
+        <div style={{display:"flex", flexDirection:"column", alignContent:"center", justifyContent:"center", textAlign:"center", alignItems:"center", height:"100vh"}}>
+          <h1 style={{animation:"flash 1.5s infinite"}}>Uploading</h1>
+          <p>Just give us a sec</p>
+        </div>
+      </>
+      )
+    }
+  };
 
 export default UploadNewJourney

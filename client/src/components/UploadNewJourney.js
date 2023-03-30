@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom"
 
 const UploadNewJourney = (props) => {
+  const navigate = useNavigate()
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
@@ -56,15 +57,12 @@ const UploadNewJourney = (props) => {
   },[])
 
   const display = (e) => {
-    console.log(location)
-    console.log(imgTime)
-    console.log(imgTimeDisplay)
     const file = e.target.files[0];
     setChangeButton("Change Photo/Video")
     setSelectedImage(file);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
     if (name.length !==0){
     if(!selectedImage) return
@@ -93,7 +91,12 @@ const UploadNewJourney = (props) => {
     }),
     headers: {'Content-type':'application/json'}
     })
-    .then(res => console.log(res))
+    .then(res => {
+      setLoading(false)
+      navigate("/")
+      console.log(res)
+
+    })
     
   }
 
@@ -101,33 +104,30 @@ const UploadNewJourney = (props) => {
     e.preventDefault()
     setName(e.target.value)
   }
-
+  if (loading == false){
   return ( 
     <> 
-      
       <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
         <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
         <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
         <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
       </div>      
 
-      {loading == false? (
+      
       <form style={{display: "flex", flexDirection:"column", alignItems: "center", marginTop:"20px"}}>
         <label name="journeyName">New Journey Name: {name}</label>
         <input style={{borderRadius:"20px", padding: "2px 10px", marginTop:"2px", width:"140px"}} type="text" name="journeyName" placeholder="Please type here..." maxLength="20" onChange={(e)=>changeText(e)}></input>
       </form>
-      ) : (null)}
 
       <div>
       <form style={{display: "flex", flexDirection:"column", alignItems: "center"}}onSubmit = {(e)=> handleSubmit(e)}>
-        {loading == false? (
         <label style={{marginTop:"20px", marginBottom:"22px"}}>
             <input type="file" name="image" onChange={(e) => display(e)} style={{ display: "none" }} />
             <span>{changeButton}</span>
         </label>
-        ) : (null)}
+        
 
-          <div style={{width:"80vw", height: "100vw", border:"solid 2px white", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"}}>
+          <div style={{width:"80vw", height: "80vw", border:"solid 2px white", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"}}>
           {selectedImage && selectedImage.type.includes("image") && 
             <img style={{ maxWidth: "100%"}} src={`${URL.createObjectURL(selectedImage)}`} alt="Selected" />
           }
@@ -143,6 +143,16 @@ const UploadNewJourney = (props) => {
       </div>
 
     </>
-    )};
+    )} else {
+      return(
+      <>
+        <div style={{display:"flex", flexDirection:"column", alignContent:"center", justifyContent:"center", textAlign:"center", alignItems:"center", height:"100vh"}}>
+          <h1 style={{animation:"flash 1.5s infinite"}}>Uploading</h1>
+          <p>Just give us a sec</p>
+        </div>
+      </>
+      )
+    }
+  };
 
 export default UploadNewJourney
