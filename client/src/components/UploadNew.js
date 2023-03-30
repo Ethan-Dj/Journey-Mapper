@@ -101,7 +101,7 @@ const UploadNewJourney = (props) => {
     
   }
 
-  if (loading == false){
+  if (loading === false){
   return ( 
     <> 
       <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
