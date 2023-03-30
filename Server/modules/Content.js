@@ -6,7 +6,7 @@ const getAllImages = () => {
 }
 
 const uploadImages = (value) => {
-    console.log("here")
+    console.log("loading")
     return db("testimg")
     .insert(value)
 }

@@ -18,13 +18,16 @@ const _uploadImages = async(req,res) => {
             upload_preset: 'mapper',
             resource_type: "auto"
         });
+        console.log("here")
         const obj = {
             "url": uploadResponse.url,
-            "lat": req.body.lat,
+            "locationname" : req.body.locationName,
             "long": req.body.long,
-            "journeyname": req.body.journeyname,
-            "imgtime": req.body.imgtime,
-            "userid" : 1,
+            "lat": req.body.lat,
+            "imgtime": req.body.imgTime,
+            "imgtimedisplay":req.body.imgTimeDisplay,
+            "journeyname": req.body.journeyName,
+            "userid" : req.body.userId
         }
         uploadImages(obj)
         .then(data => {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const UploadNew = (props) => {
+const UploadNewJourney = (props) => {
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
@@ -45,7 +45,7 @@ const UploadNew = (props) => {
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
-      const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      const formattedDateTime = `${[year,month,day,hours,minutes,seconds]}`
       const displayFormattedTime = `${hours}:${minutes}-${day}/${month}/${year-2000}`
       setImgTimeDisplay(displayFormattedTime)
       setImgTime(formattedDateTime)
@@ -79,11 +79,10 @@ const UploadNew = (props) => {
       locationName: location.name,
       long: location.long,
       lat: location.lat,
-      imgtime: imgTime,
+      imgTime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
-      journeyname: "pasta",
-      userid: 1
-
+      journeyName: "name",
+      userId: 1
     }),
     headers: {'Content-type':'application/json'}
     })
@@ -94,13 +93,13 @@ const UploadNew = (props) => {
     <>
       <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
         <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
-        <h3 style={{fontWeight: "500"}}><u>Upload</u></h3>
+        <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
         <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
       </div>
 
       <div>
       <form style={{display: "flex", flexDirection:"column", alignItems: "center"}}onSubmit = {(e)=> handleSubmit(e)}>
-        <label style={{marginTop:"50px", marginBottom:"25px"}}>
+        <label style={{marginTop:"20px", marginBottom:"22px"}}>
             <input type="file" name="image" onChange={(e) => display(e)} style={{ display: "none" }} />
             <span>{changeButton}</span>
         </label>
@@ -114,12 +113,13 @@ const UploadNew = (props) => {
           }
         </div>
 
-        <input style={{margin:"20px"}} id="submit" type="submit" value="Add photo/video and location to journey"/>
+        <input style={{marginTop:"20px", marginBottom:"20px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
 
-        <p style={{fontSize:"12px"}}>Only photos and videos please...</p>
+        <p style={{fontSize:"12px", margin:"0"}}>Your journey must have a name...</p>
+        <p style={{fontSize:"12px", margin:"0"}}>Only upload photos and videos please...</p>
       </form>
       </div>
     </>
     )};
 
-export default UploadNew
+export default UploadNewJourney

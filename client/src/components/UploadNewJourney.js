@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const UploadNewJourney = (props) => {
 
@@ -46,7 +47,7 @@ const UploadNewJourney = (props) => {
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
-      const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      const formattedDateTime = `${[year,month,day,hours,minutes,seconds]}`
       const displayFormattedTime = `${hours}:${minutes}-${day}/${month}/${year-2000}`
       setImgTimeDisplay(displayFormattedTime)
       setImgTime(formattedDateTime)
@@ -74,6 +75,7 @@ const UploadNewJourney = (props) => {
   }
 
   const uploadImage = async (base64EncodedImage) => {
+    console.log("loading")
     await fetch('http://localhost:3001/api/upload', {
     method: 'POST',
     body: JSON.stringify({
@@ -81,15 +83,16 @@ const UploadNewJourney = (props) => {
       locationName: location.name,
       long: location.long,
       lat: location.lat,
-      imgtime: imgTime,
+      imgTime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
-      journeyname: name,
-      userid: 1
+      journeyName: name,
+      userId: 1
 
     }),
     headers: {'Content-type':'application/json'}
     })
     .then(res => console.log(res))
+    console.log("loading over")
   }
 
   const changeText = (e) => {
