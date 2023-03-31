@@ -1,4 +1,3 @@
-
 import { useEffect } from "react"
 import { useState } from "react";
 
@@ -7,14 +6,15 @@ const Home = (props) => {
     const [fetchedData, setFetchedData]=useState({})
     const [loaded, setLoaded]=useState(false)
     const [track, setTrack] = useState({})
+    const [isImage, setIsImage] = useState(true) // true if image false if not
 
     useEffect(()=>{
     fetch('http://localhost:3001/api/images')
     .then(response => response.json())
     .then(data => {
         const reversed = data.reverse()
-        console.log(reversed)
         setFetchedData(reversed)
+        console.log(reversed)
         setLoaded(true)
     })
     .catch(error => console.error(error));
@@ -30,35 +30,56 @@ const Home = (props) => {
         }
     },[loaded])
 
-    const goBack = (name) => {
-        
-    }
+    useEffect(()=> {
+        if (Object.keys(track).length !== 0){
+            if (fetchedData[track.empty].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
+                console.log(`${fetchedData[track.empty].url}`)
+                setIsImage(false)
+            } else {
+                setIsImage(true)
+                console.log(`${fetchedData[track.empty].url}`)
+        }}
+    },[track])
 
     const goForward = (name) => {
-        console.log(name)
         let data = {...track}
         data.empty ++
         setTrack(data)
-        // now add limits for going either way
-        // add option for video 
-        // add map functionality
-        // add other titles
-        // add map page go back to same coordinates store state in redux
-        // for more than 15 journeys just have button to load more
+    }
+
+    const goBack = (name) => {
+        let data = {...track}
+        if (data.empty !== 0){
+            data.empty --
+            setTrack(data)
+        }
     }
 
     return(
         <>
         <h1>Home</h1>
-        {console.log("track", track)}
+        {isImage === true ? (
         <div style={{width:"100vw", height:"100vw", border:"2px white solid", 
                 backgroundImage: `url('${Object.keys(track).length === 0? null : fetchedData[track.empty].url}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 }}>
-            <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"10vw", height:"80vw"}}>Left</button>
-            <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"10vw", height:"80vw"}}>Right</button>
+            <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between"}}>
+                <h5 style={{border:"none"}}>{Object.keys(track).length === 0? null : fetchedData[track.empty].journeyname}</h5>
+                <h5 style={{border:"none"}}>{Object.keys(track).length === 0? null : fetchedData[track.empty].locationname}</h5>
+            </div>
+            <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0.5", width:"45vw", marginRight:"5vw", marginTop:"10vw", height:"80vw"}}>Left</button>
+            <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0.5", width:"45vw", marginLeft:"5vw", marginTop:"10vw", height:"80vw"}}>Right</button>
         </div>
+        ) : (
+            <div style={{width:"100vw", height:"100vw", border:"2px white solid", position: "relative"}}>
+            <video autoPlay loop style={{ width: "100%",  objectFit: "cover"}} controls src={`${fetchedData[track.empty].url}`}/>
+            <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
+            <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0.5", width:"45vw", marginRight:"5vw", marginTop:"10vw", height:"80vw"}}>Left</button>
+            <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0.5", width:"45vw", marginLeft:"5vw", marginTop:"10vw", height:"80vw"}}>Right</button>
+            </div>
+        </div>
+        )}
         <div style={{width:"100vw", height:"27vh", border:"2px white solid"}}></div>
         </>
     )

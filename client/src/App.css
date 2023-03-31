@@ -6,7 +6,7 @@ body {
   color: white;
 }
 
-button, #submit, span {
+button, #submit, span, h5 {
   color: white;
   font-family:'Roboto', sans-serif;
   font-weight: 500;
