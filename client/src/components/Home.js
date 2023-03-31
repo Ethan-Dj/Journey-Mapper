@@ -94,13 +94,15 @@ const Home = (props) => {
             <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
                 <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px"}}>{Object.keys(track).length === 0? null : fetchedData[track.empty].imgtimedisplay.replace(/\-/g, " ")}</button>
-                <button style={{height: "30px", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
+                <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
                 <button style={{ marginRight:"5vw", height: "30px"}} onClick={()=>console.log("fuck")}>View Journey Map</button>
             </div>
             </div>
         </div>
         )}
-        <div style={{width:"100vw", height:"27vh", border:"2px white solid"}}></div>
+        <div style={{width:"100vw", height:"27vh", border:"2px white solid"}}>
+            
+        </div>
         </>
     )
 }
