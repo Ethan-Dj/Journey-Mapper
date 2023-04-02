@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useState, useRef } from "react";
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxdm56cGdpNyJ9.-wLLlz-sFhNPiXCyVCQ6kg';
+import Map1 from "./Map"
+import { Map } from "mapbox-gl";
 
 const Home = (props) => {
 
@@ -10,46 +10,6 @@ const Home = (props) => {
     const [track, setTrack] = useState({})
     const [isImage, setIsImage] = useState(true) // true if image false if not
     const [muted, setMuted] = useState(true);
-
-    const [map, setMap] = useState(null);
-    const [start, setStart] = useState([34.801720704888070, 32.086978083560936]);
-    const [end, setEnd] = useState([34.8017207048, 32.089828845381180]);
-    const [startZoom, setStartZoom] = useState(15);
-    const [endZoom, setEndZoom] = useState(16);
-
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: start,
-      zoom: startZoom
-    });
-
-    setMap(map);
-
-    // Clean up on unmount
-        return () => map.remove();
-    }, []);
-
-    const animateTo = () => {
-
-        const distance = mapboxgl.LngLat.convert(end).distanceTo(mapboxgl.LngLat.convert(map.getCenter()));
-        const speed = distance / 500; // 1000 pixels per second
-        const duration = Math.min(distance / speed, 500);
-
-        map.flyTo({
-          center: end,
-          zoom: endZoom,
-          speed: 8,
-          curve: 1,
-          easing: t => t,
-          duration: duration
-        });
-      };
-
-    function handleToggleMute() {
-      setMuted(!muted);
-    }
 
     useEffect(()=>{setMuted(true)},[track])
 
@@ -100,6 +60,10 @@ const Home = (props) => {
         }
     }
 
+    function handleToggleMute() {
+        setMuted(!muted);
+      }
+
     return(
         <>
         <h1>Home</h1>
@@ -139,8 +103,7 @@ const Home = (props) => {
         </div>
         )}
         <div style={{width:"100vw", height:"27vh", border:"2px white solid"}}>
-            <div id="map" className="map-container" />
-            <button onClick={animateTo}>Animate to End</button>
+            <Map1 track={track} fetchedData={fetchedData} />
         </div>
         </>
     )
