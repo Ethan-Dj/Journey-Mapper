@@ -5,19 +5,27 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxd
 
 const Map1 = (props) => {
 
-  const [viewport, setViewport] = useState({
+   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "27vh",
-    latitude: 32.086978083560936,
-    longitude: 34.801720704888070,
+    latitude: 0,
+    longitude: 0,
     zoom: 10,
   });
 
-  const [lines, setLines] = useState([[0,0]])
+  useEffect(()=>{
+    if (Array.isArray(props.fetchedData)){
+       setViewport({
+        width: "100vw",
+        height: "27vh",
+        latitude: props.fetchedData[0].lat,
+        longitude: props.fetchedData[0].long,
+        zoom: 10,
+       },[props])
+    }
+  },[props])
 
-  const handleViewportChange = (newViewport) => {
-    setViewport({ ...viewport, ...newViewport });
-  };
+  const [lines, setLines] = useState([[0,0]])
 
   const dataOne = {
     type: "Feature",
@@ -36,6 +44,37 @@ const Map1 = (props) => {
 
   },[props])
 
+    const CustomMarker = ({ latitude, longitude, index }) => {
+        return (
+        <Marker key={index} longitude={longitude} latitude={latitude}>
+            <div>
+            <span style={{backgroundColor: index == props.fetchedData.length? "red": (
+                        index == 1? "#1ec71e" : "#FF6400"), 
+                        border: "none", fontSize:"13px"
+                        }}>
+                <b>{index}</b>
+            </span>
+            </div>
+        </Marker>
+        );
+  };
+
+  const changeView = () => {
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const lat = (((Number(lines[1][1]) - Number(lines[0][1]))/15)*i) + Number(lines[0][1])
+        const long = (((Number(lines[1][0]) - Number(lines[0][0]))/15)*i) + Number(lines[0][0])
+        setViewport({
+          width: "100vw",
+          height: "27vh",
+          latitude: lat,
+          longitude: long,
+          zoom: 10
+        });
+      }, 150 * i / 20);
+    }
+  };
+
   return (
     <>
       <ReactMapGL
@@ -44,22 +83,20 @@ const Map1 = (props) => {
         mapboxApiAccessToken={mapboxgl.accessToken}
         onMove={evt => setViewport(evt.viewport)}
       >
-        {Array.isArray(props.fetchedData) && props.fetchedData.length > 0 && (
-            props.fetchedData.map(item => (
-                <Marker latitude={item.lat} longitude={item.long} className=""
-                style={{
-                    width: "30px", 
-                    height: "30px", 
-                    borderRadius: "50%",
-                    border: "none", 
-                    backgroundColor: "orange",
-                    transform: "translate(-50%, -50%)",
-                    marker: false
-
+    {Array.isArray(props.fetchedData) && props.fetchedData.length > 0 && (
+        props.fetchedData.map((item, index) => (
+            <CustomMarker latitude={item.lat} longitude={item.long} index={props.fetchedData.length - index}
+            style={{
+                width: "30px", 
+                height: "30px", 
+                borderRadius: "50%",
+                border: "none", 
+                transform: "translate(-50%, -50%)",
                 }}>
-                </Marker>
-            ))
-        )}
+            </CustomMarker>
+        ))
+    )}
+
         <Source id="polylineLayer" type="geojson" data={dataOne}>
           <Layer
             id="lineLayer"
@@ -77,8 +114,12 @@ const Map1 = (props) => {
           />
         </Source>
       </ReactMapGL>
+      <button onClick={changeView}>Map moves</button>
     </>
   )
 }
 
 export default Map1;
+
+
+
