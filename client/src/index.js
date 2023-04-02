@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { reducer } from './reducers/reducer';
 import { BrowserRouter } from 'react-router-dom';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const store = createStore(reducer)
 

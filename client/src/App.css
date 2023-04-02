@@ -54,7 +54,15 @@ input[type="text"] {
   }
 }
 
+.map-container {
+  width: 100vw; 
+  height: 27vh 
+  }
 
+.mapboxgl-ctrl-icon {
+  background-color: transparent;
+  border-color: transparent;
+}
 
 
 
