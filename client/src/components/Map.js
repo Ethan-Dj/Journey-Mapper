@@ -10,8 +10,11 @@ const Map1 = (props) => {
     height: "27vh",
     latitude: 0,
     longitude: 0,
-    zoom: 10,
+    zoom: 13,
   });
+
+  const [mount, didMount] = useState(false)
+
 
   useEffect(()=>{
     if (Array.isArray(props.fetchedData)){
@@ -41,7 +44,6 @@ const Map1 = (props) => {
         const lines1 = props.fetchedData.map(item => [item.long, item.lat])
         setLines(lines1)
     }
-
   },[props])
 
     const CustomMarker = ({ latitude, longitude, index }) => {
@@ -59,20 +61,33 @@ const Map1 = (props) => {
         );
   };
 
+  const [currentTrack, setCurrentTrack] = useState(0)
+
+  useEffect(()=>{
+    if (mount == true && Number(props.track.empty) > 0 ) {
+      if (lines[currentTrack] !== undefined) {
+      changeView()}
+    } else {
+      didMount(true)
+    }
+  }, [props.track])
+
   const changeView = () => {
-    for (let i = 0; i < 20; i++) {
+    if (mount == true){
+    for (let i = 0; i < 21; i++) {
       setTimeout(() => {
-        const lat = (((Number(lines[1][1]) - Number(lines[0][1]))/15)*i) + Number(lines[0][1])
-        const long = (((Number(lines[1][0]) - Number(lines[0][0]))/15)*i) + Number(lines[0][0])
+        console.log(currentTrack)
+        const lat = (((Number(lines[props.track.empty][1]) - Number(lines[props.track.empty-1][1]))/20)*i) + Number(lines[props.track.empty-1][1])
+        const long = (((Number(lines[props.track.empty][0]) - Number(lines[props.track.empty-1][0]))/20)*i) + Number(lines[props.track.empty-1][0])
         setViewport({
           width: "100vw",
           height: "27vh",
           latitude: lat,
           longitude: long,
-          zoom: 10
+          zoom: 13
         });
-      }, 150 * i / 20);
-    }
+      }, 300 * i / 20);
+    }}
   };
 
   return (
@@ -114,7 +129,6 @@ const Map1 = (props) => {
           />
         </Source>
       </ReactMapGL>
-      <button onClick={changeView}>Map moves</button>
     </>
   )
 }
@@ -123,3 +137,4 @@ export default Map1;
 
 
 
+// const lat = (((Number(lines[currentTrack][1]) - Number(lines[currentTrack-1][1]))/20)*i) + Number(lines[0][1])
