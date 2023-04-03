@@ -38,24 +38,33 @@ const Home = (props) => {
     useEffect(()=> {
         if (Object.keys(track).length !== 0){
             if (fetchedData[track.empty].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
-                console.log(`${fetchedData[track.empty].url}`)
+                // console.log(`${fetchedData[track.empty].url}`)
                 setIsImage(false)
             } else {
                 setIsImage(true)
-                console.log(`${fetchedData[track.empty].url}`)
+                // console.log(`${fetchedData[track.empty].url}`)
         }}
     },[track])
 
     const goForward = (name) => {
         let data = {...track}
-        data.empty ++
-        setTrack(data)
+        if (data.empty !== Object.keys(fetchedData).length -1 ){
+            data.empty ++
+            setTrack(data)
+        } else {
+            data.empty = 0 
+            setTrack(data)
+        }
+
     }
 
     const goBack = (name) => {
         let data = {...track}
         if (data.empty !== 0){
             data.empty --
+            setTrack(data)
+        } else {
+            data.empty = Object.keys(fetchedData).length-1
             setTrack(data)
         }
     }

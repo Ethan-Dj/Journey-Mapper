@@ -65,23 +65,33 @@ const Map1 = (props) => {
     if (mount == true ) {
       if (lines[props.track.empty] !== undefined) {
       const data1 = props.track.empty
-      if (props.track.empty === 0 ){
-        const dataMinus = props.track.empty
-        console.log(lines[dataMinus])
-        console.log(lines[data1])
-        changeView(data1, dataMinus)
-        setPrevProps(props)
-      } else if (props.track.empty < prevProps){
+      if (props.track.empty === 0 && prevProps ===0 ){
+        console.log("fuckkkkk")
         setViewport({
           width: "100vw",
           height: "27vh",
-          latitude:  Number(lines[props.track.empty][1]),
-          longitude: Number(lines[props.track.empty][0]),
+          latitude:  Number(lines[0][1]),
+          longitude: Number(lines[0][0]),
           zoom: 13
         })
-      }else {
+      } else if (props.track.empty === 0 && prevProps === props.fetchedData.length-1){
+        setViewport({
+          width: "100vw",
+          height: "27vh",
+          latitude:  Number(lines[0][1]),
+          longitude: Number(lines[0][0]),
+          zoom: 13
+        })
+        setPrevProps(props.track.empty)
+      }else if (props.track.empty < prevProps){
+        const dataMinus = props.track.empty+1
+        console.log("back",dataMinus, data1)
+        changeView(data1, dataMinus)
+        setPrevProps(props.track.empty)
+      } 
+      else if(props.track.empty > prevProps) {
         const dataMinus = props.track.empty-1
-        console.log(dataMinus)
+        console.log("for",dataMinus, data1)
         changeView(data1, dataMinus)
         setPrevProps(props.track.empty)
       }
@@ -89,11 +99,12 @@ const Map1 = (props) => {
     } 
     } else {
       didMount(true)
+
     }
   }, [props])
 
   const changeView = (data1, dataMinus) => {
-    if (mount == true){
+    if (true){
     for (let i = 0; i < 21; i++) {
       setTimeout(() => {
         const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/20)*i) + Number(lines[dataMinus][1])
@@ -105,7 +116,7 @@ const Map1 = (props) => {
           longitude: long,
           zoom: 13
         });
-      }, 150 * i / 20);
+      }, 200 * i / 20);
     }} 
   };
 
