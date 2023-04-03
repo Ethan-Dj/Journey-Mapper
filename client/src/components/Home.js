@@ -2,8 +2,10 @@ import { useEffect } from "react"
 import { useState, useRef } from "react";
 import Map1 from "./Map"
 import { Map } from "mapbox-gl";
+import { useNavigate } from "react-router-dom"
 
 const Home = (props) => {
+    const navigate = useNavigate()
 
     const [fetchedData, setFetchedData]=useState({})
     const [loaded, setLoaded]=useState(false)
@@ -90,7 +92,7 @@ const Home = (props) => {
             <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
                 <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].imgtimedisplay.replace(/\-/g, " ")}</i></button>
-                <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=>console.log("fuck")}>View Journey Map</button>
+                <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: fetchedData, current: "empty"}})}>View Journey Map</button>
             </div>
         </div>
         ) : (
@@ -106,7 +108,7 @@ const Home = (props) => {
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
                 <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].imgtimedisplay.replace(/\-/g, " ")}</i></button>
                 <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
-                <button style={{ marginRight:"5vw", height: "30px"}} onClick={()=>console.log("fuck")}>View Journey Map</button>
+                <button style={{ marginRight:"5vw", height: "30px"}} onClick={()=> navigate("/largemap") }>View Journey Map</button>
             </div>
             </div>
         </div>

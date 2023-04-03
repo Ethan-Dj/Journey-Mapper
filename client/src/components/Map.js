@@ -10,7 +10,7 @@ const Map1 = (props) => {
     height: "27vh",
     latitude: 0,
     longitude: 0,
-    zoom: 13
+    zoom: 14
   });
   
   useEffect(() => {
@@ -72,7 +72,7 @@ const Map1 = (props) => {
           height: "27vh",
           latitude:  Number(lines[0][1]),
           longitude: Number(lines[0][0]),
-          zoom: 13
+          zoom: 14
         })
       } else if (props.track.empty === 0 && prevProps === props.fetchedData.length-1){
         setViewport({
@@ -80,7 +80,7 @@ const Map1 = (props) => {
           height: "27vh",
           latitude:  Number(lines[0][1]),
           longitude: Number(lines[0][0]),
-          zoom: 13
+          zoom: 14
         })
         setPrevProps(props.track.empty)
       }else if (props.track.empty < prevProps){
@@ -105,18 +105,18 @@ const Map1 = (props) => {
 
   const changeView = (data1, dataMinus) => {
     if (true){
-    for (let i = 0; i < 21; i++) {
+    for (let i = 0; i < 41; i++) {
       setTimeout(() => {
-        const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/20)*i) + Number(lines[dataMinus][1])
-        const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/20)*i) + Number(lines[dataMinus][0])
+        const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/40)*i) + Number(lines[dataMinus][1])
+        const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/40)*i) + Number(lines[dataMinus][0])
         setViewport({
           width: "100vw",
           height: "27vh",
           latitude: lat,
           longitude: long,
-          zoom: 13
+          zoom: 14
         });
-      }, 200 * i / 20);
+      }, 400 * i / 40);
     }} 
   };
 
@@ -164,7 +164,3 @@ const Map1 = (props) => {
 }
 
 export default Map1;
-
-
-
-// const lat = (((Number(lines[currentTrack][1]) - Number(lines[currentTrack-1][1]))/20)*i) + Number(lines[0][1])
