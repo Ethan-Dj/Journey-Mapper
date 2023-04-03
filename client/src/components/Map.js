@@ -5,28 +5,25 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxd
 
 const Map1 = (props) => {
 
-   const [viewport, setViewport] = useState({
+  const [viewport, setViewport] = useState({
     width: "100vw",
     height: "27vh",
     latitude: 0,
     longitude: 0,
-    zoom: 13,
+    zoom: 13
   });
-
-  const [mount, didMount] = useState(false)
-
-
-  useEffect(()=>{
-    if (Array.isArray(props.fetchedData)){
-       setViewport({
-        width: "100vw",
-        height: "27vh",
+  
+  useEffect(() => {
+    if (props.fetchedData && props.fetchedData.length > 0) {
+      setViewport(prevViewport => ({
+        ...prevViewport,
         latitude: props.fetchedData[0].lat,
         longitude: props.fetchedData[0].long,
-        zoom: 10,
-       },[props])
+      }));
     }
-  },[props])
+  }, [props.fetchedData]);
+
+  const [mount, didMount] = useState(false)
 
   const [lines, setLines] = useState([[0,0]])
 
@@ -61,24 +58,46 @@ const Map1 = (props) => {
         );
   };
 
-  const [currentTrack, setCurrentTrack] = useState(0)
+  const [prevProps, setPrevProps] = useState(0)
+
 
   useEffect(()=>{
-    if (mount == true && Number(props.track.empty) > 0 ) {
-      if (lines[currentTrack] !== undefined) {
-      changeView()}
+    if (mount == true ) {
+      if (lines[props.track.empty] !== undefined) {
+      const data1 = props.track.empty
+      if (props.track.empty === 0 ){
+        const dataMinus = props.track.empty
+        console.log(lines[dataMinus])
+        console.log(lines[data1])
+        changeView(data1, dataMinus)
+        setPrevProps(props)
+      } else if (props.track.empty < prevProps){
+        setViewport({
+          width: "100vw",
+          height: "27vh",
+          latitude:  Number(lines[props.track.empty][1]),
+          longitude: Number(lines[props.track.empty][0]),
+          zoom: 13
+        })
+      }else {
+        const dataMinus = props.track.empty-1
+        console.log(dataMinus)
+        changeView(data1, dataMinus)
+        setPrevProps(props.track.empty)
+      }
+      
+    } 
     } else {
       didMount(true)
     }
-  }, [props.track])
+  }, [props])
 
-  const changeView = () => {
+  const changeView = (data1, dataMinus) => {
     if (mount == true){
     for (let i = 0; i < 21; i++) {
       setTimeout(() => {
-        console.log(currentTrack)
-        const lat = (((Number(lines[props.track.empty][1]) - Number(lines[props.track.empty-1][1]))/20)*i) + Number(lines[props.track.empty-1][1])
-        const long = (((Number(lines[props.track.empty][0]) - Number(lines[props.track.empty-1][0]))/20)*i) + Number(lines[props.track.empty-1][0])
+        const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/20)*i) + Number(lines[dataMinus][1])
+        const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/20)*i) + Number(lines[dataMinus][0])
         setViewport({
           width: "100vw",
           height: "27vh",
@@ -86,8 +105,8 @@ const Map1 = (props) => {
           longitude: long,
           zoom: 13
         });
-      }, 300 * i / 20);
-    }}
+      }, 150 * i / 20);
+    }} 
   };
 
   return (
