@@ -63,10 +63,9 @@ const Map1 = (props) => {
 
   useEffect(()=>{
     if (mount == true ) {
-      if (lines[props.track.empty] !== undefined) {
-      const data1 = props.track.empty
-      if (props.track.empty === 0 && prevProps ===0 ){
-        console.log("fuckkkkk")
+      if (lines[props.track.homa] !== undefined) {
+      const data1 = props.track.homa
+      if (props.track.homa === 0 && prevProps ===0 ){
         setViewport({
           width: "100vw",
           height: "27vh",
@@ -74,7 +73,7 @@ const Map1 = (props) => {
           longitude: Number(lines[0][0]),
           zoom: 14
         })
-      } else if (props.track.empty === 0 && prevProps === props.fetchedData.length-1){
+      } else if (props.track.homa === 0 && prevProps === props.fetchedData.length-1){
         setViewport({
           width: "100vw",
           height: "27vh",
@@ -82,18 +81,14 @@ const Map1 = (props) => {
           longitude: Number(lines[0][0]),
           zoom: 14
         })
-        setPrevProps(props.track.empty)
-      }else if (props.track.empty < prevProps){
-        const dataMinus = props.track.empty+1
-        console.log("back",dataMinus, data1)
-        changeView(data1, dataMinus)
-        setPrevProps(props.track.empty)
+        setPrevProps(props.track.homa)
+      }else if (props.track.homa < prevProps){
+        changeView(data1)
+        setPrevProps(props.track.homa)
       } 
-      else if(props.track.empty > prevProps) {
-        const dataMinus = props.track.empty-1
-        console.log("for",dataMinus, data1)
-        changeView(data1, dataMinus)
-        setPrevProps(props.track.empty)
+      else if(props.track.homa > prevProps) {
+        changeView(data1)
+        setPrevProps(props.track.homa)
       }
       
     } 
@@ -103,22 +98,19 @@ const Map1 = (props) => {
     }
   }, [props])
 
+  const [mapTest, setMapTest]= useState({})
+
   const changeView = (data1, dataMinus) => {
-    if (true){
-    for (let i = 0; i < 41; i++) {
-      setTimeout(() => {
-        const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/40)*i) + Number(lines[dataMinus][1])
-        const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/40)*i) + Number(lines[dataMinus][0])
-        setViewport({
-          width: "100vw",
-          height: "27vh",
-          latitude: lat,
-          longitude: long,
-          zoom: 14
-        });
-      }, 400 * i / 40);
-    }} 
-  };
+    if(Object.keys(mapTest).length !== 0){
+      console.log(mapTest)
+      mapTest.flyTo({
+      center: [Number(lines[data1][0]),Number(lines[data1][1])],
+      essential: true,
+      duration: 1000
+      });
+    }
+  }
+  
 
   return (
     <>
@@ -127,6 +119,10 @@ const Map1 = (props) => {
         mapStyle="mapbox://styles/mapbox/streets-v11"
         mapboxApiAccessToken={mapboxgl.accessToken}
         onMove={evt => setViewport(evt.viewport)}
+        onLoad={(map)=>{
+          console.log(map.target)
+          setMapTest(map.target)
+        }}
       >
     {Array.isArray(props.fetchedData) && props.fetchedData.length > 0 && (
         props.fetchedData.map((item, index) => (
@@ -154,7 +150,7 @@ const Map1 = (props) => {
             paint={{
               "line-color": "#FF6400",
               "line-width": 8,
-              "line-opacity" : 0.7
+              "line-opacity" : 1
             }}
           />
         </Source>
@@ -164,3 +160,22 @@ const Map1 = (props) => {
 }
 
 export default Map1;
+
+
+
+  // const changeView = (data1, dataMinus) => {
+  //   if (true){
+  //   for (let i = 0; i < 11; i++) {
+  //     setTimeout(() => {
+  //       const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/10)*i) + Number(lines[dataMinus][1])
+  //       const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/10)*i) + Number(lines[dataMinus][0])
+  //       setViewport({
+  //         width: "100vw",
+  //         height: "27vh",
+  //         latitude: lat,
+  //         longitude: long,
+  //         zoom: 14
+  //       });
+  //     }, 300 * i / 10);
+  //   }} 
+  // };

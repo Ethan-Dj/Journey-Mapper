@@ -17,6 +17,7 @@ button, #submit, span, h5 {
   font-size:13px;
   height: 24px;
   text-align: center ;
+  border: solid 2px white
 
 }
 

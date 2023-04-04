@@ -39,7 +39,7 @@ const Home = (props) => {
 
     useEffect(()=> {
         if (Object.keys(track).length !== 0){
-            if (fetchedData[track.empty].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
+            if (fetchedData[track.homa].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
                 // console.log(`${fetchedData[track.empty].url}`)
                 setIsImage(false)
             } else {
@@ -50,11 +50,11 @@ const Home = (props) => {
 
     const goForward = (name) => {
         let data = {...track}
-        if (data.empty !== Object.keys(fetchedData).length -1 ){
-            data.empty ++
+        if (data.homa !== Object.keys(fetchedData).length -1 ){
+            data.homa ++
             setTrack(data)
         } else {
-            data.empty = 0 
+            data.homa = 0 
             setTrack(data)
         }
 
@@ -62,11 +62,11 @@ const Home = (props) => {
 
     const goBack = (name) => {
         let data = {...track}
-        if (data.empty !== 0){
-            data.empty --
+        if (data.homa !== 0){
+            data.homa --
             setTrack(data)
         } else {
-            data.empty = Object.keys(fetchedData).length-1
+            data.homa = Object.keys(fetchedData).length-1
             setTrack(data)
         }
     }
@@ -80,35 +80,35 @@ const Home = (props) => {
         <h1>Home</h1>
         {isImage === true ? (
         <div style={{width:"100vw", height:"100vw", border:"2px white solid", 
-                backgroundImage: `url('${Object.keys(track).length === 0? null : fetchedData[track.empty].url}')`,
+                backgroundImage: `url('${Object.keys(track).length === 0? null : fetchedData[track.homa].url}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 }}>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px"}}>{Object.keys(track).length === 0? null : fetchedData[track.empty].journeyname}</button>
-                <button style={{border:"none", marginRight:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].locationname}</i></button>
+                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{Object.keys(track).length === 0? null : fetchedData[track.homa].journeyname}</button>
+                <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
             </div>
             <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"70vw"}}>Left</button>
             <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].imgtimedisplay.replace(/\-/g, " ")}</i></button>
+                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
                 <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: fetchedData, current: "empty"}})}>View Journey Map</button>
             </div>
         </div>
         ) : (
             <div style={{width:"100vw", height:"100vw", border:"2px white solid", position: "relative"}}>
-            <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${fetchedData[track.empty].url}`}/>
+            <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${fetchedData[track.homa].url}`}/>
             <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px"}}>{Object.keys(track).length === 0? null : fetchedData[track.empty].journeyname}</button>
-                <button style={{border:"none", marginRight:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].locationname}</i></button>
+                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{Object.keys(track).length === 0? null : fetchedData[track.homa].journeyname}</button>
+                <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
             </div>
             <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"70vw"}}>Left</button>
             <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
             <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.empty].imgtimedisplay.replace(/\-/g, " ")}</i></button>
+                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
                 <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
-                <button style={{ marginRight:"5vw", height: "30px"}} onClick={()=> navigate("/largemap") }>View Journey Map</button>
+                <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: fetchedData, current: "empty"}}) }>View Journey Map</button>
             </div>
             </div>
         </div>

@@ -1,22 +1,26 @@
 import mapboxgl from 'mapbox-gl';
-import ReactMapGL, { Marker, Popup, Source, Layer } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, Source, Layer, fitBounds } from "react-map-gl";
 import { useEffect , useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxdm56cGdpNyJ9.-wLLlz-sFhNPiXCyVCQ6kg';
 
 const Map1 = (props) => {
     const location = useLocation()
+    const navigate =useNavigate()
 
     const [viewport, setViewport] = useState({
         latitude: 0,
         longitude: 0,
-        zoom: 11
+        zoom: 12
       });
+
 
       useEffect(() => {
         if (location.state.fetchedData && location.state.fetchedData.length > 0) {
         let totalLat = 0 
         let totalLong = 0 
+        let maxLat = 0 
+
         location.state.fetchedData.map(item => {
             totalLat = totalLat + Number(item.lat)
             totalLong = totalLong + Number(item.long)
@@ -24,7 +28,7 @@ const Map1 = (props) => {
         setViewport({
             latitude: totalLat/location.state.fetchedData.length,
             longitude: totalLong/location.state.fetchedData.length,
-            zoom: 11
+            zoom: 12
         })
     }
       }, [location.state]);
@@ -46,7 +50,6 @@ const Map1 = (props) => {
         const lines1 = location.state.fetchedData.map(item => [item.long, item.lat])
         setLines(lines1)
 
-        // Fit markers on map
         const bounds = new mapboxgl.LngLatBounds();
         location.state.fetchedData.forEach(item => {
           bounds.extend([item.long, item.lat]);
@@ -55,8 +58,13 @@ const Map1 = (props) => {
           ...viewport,
           latitude: bounds.getCenter().lat,
           longitude: bounds.getCenter().lng,
-          zoom: viewport.zoom,
-          transitionDuration: 500
+          padding: {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50
+          },
+          transitionDuration: 0
         }));
     }
   },[props])
@@ -70,20 +78,41 @@ const Map1 = (props) => {
                         index == 1? "#1ec71e" : "#FF6400"), 
                         border: "none", fontSize:"13px"
                         }}>
-                <b>{index}</b>
+                <b style={{color: index == location.state.fetchedData.length? "red": (
+                        index == 1? "#1ec71e" : "#FF6400")}}>0</b>
             </span>
             </div>
         </Marker>
         );
   };
 
+  const onLoad = (map) => {
+    const data = location.state.fetchedData
+    console.log(map)
+    const bounds = data.reduce(
+      (bounds, data) => bounds.extend([data.long, data.lat]),
+      new mapboxgl.LngLatBounds()
+    );
+     map.target.fitBounds(bounds, { padding: 40,duration: 400 })
+  };
+
   return (
-    <div style={{height:"100vw", width:"100vw"}}>
-      <ReactMapGL
+    <>
+    <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center"}}>
+        <button style={{display:"flex", flexDirection:"column", justifyContent:"center", border: "solid 2px white", marginLeft:"5vw"}} onClick={()=> navigate("/")}>Go back</button>
+    </div>
+    <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"#7D7DFF", justifyContent:"space-between"}}>
+        <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? location.state.fetchedData[0].journeyname: null}</button>
+        <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? `${location.state.fetchedData[0].locationname} - ${location.state.fetchedData[location.state.fetchedData.length-1].locationname}` : null}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+    </div>
+
+    <div style={{height:"70vh", width:"100vw"}}>
+      <ReactMapGL id="map"
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         mapboxApiAccessToken={mapboxgl.accessToken}
         onMove={evt => setViewport(evt.viewport)}
+        onLoad = {onLoad}
       >
     {Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 && (
         location.state.fetchedData.map((item, index) => (
@@ -111,12 +140,16 @@ const Map1 = (props) => {
             paint={{
               "line-color": "#FF6400",
               "line-width": 8,
-              "line-opacity" : 0.7
+              "line-opacity" : 1
             }}
           />
         </Source>
       </ReactMapGL>
     </div>
+    <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"#7D7DFF", justifyContent:"center"}}>
+        <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? `${location.state.fetchedData[0].imgtimedisplay} - ${location.state.fetchedData[location.state.fetchedData.length-1].imgtimedisplay}` : null}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+    </div>
+    </>
   )
 }
 
