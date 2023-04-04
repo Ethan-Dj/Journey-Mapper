@@ -11,7 +11,7 @@ const Map1 = (props) => {
     const [viewport, setViewport] = useState({
         latitude: 0,
         longitude: 0,
-        zoom: 12
+        zoom: 10
       });
 
 
@@ -28,7 +28,7 @@ const Map1 = (props) => {
         setViewport({
             latitude: totalLat/location.state.fetchedData.length,
             longitude: totalLong/location.state.fetchedData.length,
-            zoom: 12
+            zoom: 10
         })
     }
       }, [location.state]);
@@ -93,7 +93,7 @@ const Map1 = (props) => {
       (bounds, data) => bounds.extend([data.long, data.lat]),
       new mapboxgl.LngLatBounds()
     );
-     map.target.fitBounds(bounds, { padding: 40,duration: 400 })
+     map.target.fitBounds(bounds, { padding: 40,duration: 500 })
   };
 
   return (
