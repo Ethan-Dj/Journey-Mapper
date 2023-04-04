@@ -28,6 +28,29 @@ const Home = (props) => {
     },[])
 
     useEffect(()=>{
+        if (Object.keys(fetchedData).length !== 0 && loaded == true){
+            let seperatedJourneys = []
+            fetchedData.map((item, index)=>{
+                if (index === 0){
+                    let array = [item]
+                    seperatedJourneys.push(array)
+                } else if (item.journeyname ==  seperatedJourneys[seperatedJourneys.length-1][0].journeyname){
+                    seperatedJourneys[seperatedJourneys.length-1].push(item)
+                }
+                 else {
+                    let array = [item]
+                    seperatedJourneys.push(array)
+                }
+            })
+        let ordered = []
+        seperatedJourneys.map(item => {
+            ordered.push(item.reverse())
+        })
+        console.log(ordered)
+        }
+    },[fetchedData])
+
+    useEffect(()=>{
         let emptyObj = {}
         if (Object.keys(fetchedData).length !== 0 && loaded == true){
             fetchedData.forEach(item => {
@@ -57,7 +80,6 @@ const Home = (props) => {
             data.homa = 0 
             setTrack(data)
         }
-
     }
 
     const goBack = (name) => {
