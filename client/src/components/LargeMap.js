@@ -7,23 +7,27 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxd
 const Map1 = (props) => {
     const location = useLocation()
 
-  const [viewport, setViewport] = useState({
-    width: "100vw",
-    height: "27vh",
-    latitude: 0,
-    longitude: 0,
-    zoom: 14
-  });
-  
-  useEffect(() => {
-    if (location.state.fetchedData && location.state.fetchedData.length > 0) {
-      setViewport(prevViewport => ({
-        ...prevViewport,
-        latitude: location.state.fetchedData[0].lat,
-        longitude: location.state.fetchedData[0].long,
-      }));
+    const [viewport, setViewport] = useState({
+        latitude: 0,
+        longitude: 0,
+        zoom: 11
+      });
+
+      useEffect(() => {
+        if (location.state.fetchedData && location.state.fetchedData.length > 0) {
+        let totalLat = 0 
+        let totalLong = 0 
+        location.state.fetchedData.map(item => {
+            totalLat = totalLat + Number(item.lat)
+            totalLong = totalLong + Number(item.long)
+        })
+        setViewport({
+            latitude: totalLat/location.state.fetchedData.length,
+            longitude: totalLong/location.state.fetchedData.length,
+            zoom: 11
+        })
     }
-  }, [location.state.fetchedData]);
+      }, [location.state]);
 
 
   const [lines, setLines] = useState([[0,0]])
@@ -41,8 +45,22 @@ const Map1 = (props) => {
     if (Array.isArray(location.state.fetchedData)){
         const lines1 = location.state.fetchedData.map(item => [item.long, item.lat])
         setLines(lines1)
+
+        // Fit markers on map
+        const bounds = new mapboxgl.LngLatBounds();
+        location.state.fetchedData.forEach(item => {
+          bounds.extend([item.long, item.lat]);
+        });
+        setViewport(viewport => ({
+          ...viewport,
+          latitude: bounds.getCenter().lat,
+          longitude: bounds.getCenter().lng,
+          zoom: viewport.zoom,
+          transitionDuration: 500
+        }));
     }
   },[props])
+
 
     const CustomMarker = ({ latitude, longitude, index }) => {
         return (
@@ -60,7 +78,7 @@ const Map1 = (props) => {
   };
 
   return (
-    <div style={{height:"100vh", width:"100vw"}}>
+    <div style={{height:"100vw", width:"100vw"}}>
       <ReactMapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
