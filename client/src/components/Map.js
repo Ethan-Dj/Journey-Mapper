@@ -5,16 +5,20 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxd
 
 const Map1 = (props) => {
 
+  const [mount, didMount] = useState(false)
+
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "27vh",
     latitude: 0,
     longitude: 0,
-    zoom: 14
+    zoom: 15
   });
   
   useEffect(() => {
     if (props.fetchedData && props.fetchedData.length > 0) {
+      console.log("this is data that was sent", props.fetchedData)
+      console.log("this is track", props.track)
       setViewport(prevViewport => ({
         ...prevViewport,
         latitude: props.fetchedData[0].lat,
@@ -22,8 +26,6 @@ const Map1 = (props) => {
       }));
     }
   }, [props.fetchedData]);
-
-  const [mount, didMount] = useState(false)
 
   const [lines, setLines] = useState([[0,0]])
 
@@ -37,6 +39,7 @@ const Map1 = (props) => {
   };
 
   useEffect(()=>{
+    console.log(props.track)
     if (Array.isArray(props.fetchedData)){
         const lines1 = props.fetchedData.map(item => [item.long, item.lat])
         setLines(lines1)
@@ -47,66 +50,40 @@ const Map1 = (props) => {
         return (
         <Marker key={index} longitude={longitude} latitude={latitude}>
             <div>
-            <span style={{backgroundColor: index == props.fetchedData.length? "red": (
-                        index == 1? "#1ec71e" : "#FF6400"), 
+            <span style={{backgroundColor: props.fetchedData.length - index == 0? "#1ec71e": (
+                        props.fetchedData.length - index + 1 == props.fetchedData.length == 0? "red" : "#FF6400"), 
                         border: "none", fontSize:"13px"
                         }}>
-                <b>{index}</b>
+                <b>{props.fetchedData.length - index + 1}</b>
             </span>
             </div>
         </Marker>
         );
   };
 
-  const [prevProps, setPrevProps] = useState(0)
+  // const [prevProps, setPrevProps] = useState(0)
 
 
   useEffect(()=>{
-    if (mount == true ) {
-      if (lines[props.track.homa] !== undefined) {
-      const data1 = props.track.homa
-      if (props.track.homa === 0 && prevProps ===0 ){
-        setViewport({
-          width: "100vw",
-          height: "27vh",
-          latitude:  Number(lines[0][1]),
-          longitude: Number(lines[0][0]),
-          zoom: 14
-        })
-      } else if (props.track.homa === 0 && prevProps === props.fetchedData.length-1){
-        setViewport({
-          width: "100vw",
-          height: "27vh",
-          latitude:  Number(lines[0][1]),
-          longitude: Number(lines[0][0]),
-          zoom: 14
-        })
-        setPrevProps(props.track.homa)
-      }else if (props.track.homa < prevProps){
-        changeView(data1)
-        setPrevProps(props.track.homa)
-      } 
-      else if(props.track.homa > prevProps) {
-        changeView(data1)
-        setPrevProps(props.track.homa)
-      }
-      
-    } 
+    if (mount == true){
+      changeView()
+      console.log("Wpaoskdjfklajsdflkjasdf", props.fetchedData)
+      console.log("askjfnaksdjfka:", props.track)
     } else {
       didMount(true)
-
     }
+
   }, [props])
 
   const [mapTest, setMapTest]= useState({})
 
-  const changeView = (data1, dataMinus) => {
+  const changeView = () => {
     if(Object.keys(mapTest).length !== 0){
-      console.log(mapTest)
       mapTest.flyTo({
-      center: [Number(lines[data1][0]),Number(lines[data1][1])],
+      center: [props.fetchedData[props.track[0]].long, props.fetchedData[props.track[0]].lat],
       essential: true,
-      duration: 1000
+      duration: 1300,
+      zoom:15
       });
     }
   }
@@ -120,7 +97,6 @@ const Map1 = (props) => {
         mapboxApiAccessToken={mapboxgl.accessToken}
         onMove={evt => setViewport(evt.viewport)}
         onLoad={(map)=>{
-          console.log(map.target)
           setMapTest(map.target)
         }}
       >

@@ -9,9 +9,10 @@ const Home = (props) => {
 
     const [fetchedData, setFetchedData]=useState({})
     const [loaded, setLoaded]=useState(false)
-    const [track, setTrack] = useState({})
-    const [isImage, setIsImage] = useState(true) // true if image false if not
+    const [track, setTrack] = useState([])
+    const [isImage, setIsImage] = useState([]) // true if image false if not
     const [muted, setMuted] = useState(true);
+    const [seperated, setSeperated] = useState([])
 
     useEffect(()=>{setMuted(true)},[track])
 
@@ -47,48 +48,56 @@ const Home = (props) => {
             ordered.push(item.reverse())
         })
         console.log(ordered)
+        setSeperated(ordered)
         }
     },[fetchedData])
 
     useEffect(()=>{
-        let emptyObj = {}
-        if (Object.keys(fetchedData).length !== 0 && loaded == true){
-            fetchedData.forEach(item => {
-                emptyObj[`${item.journeyname}`] = 0;
+        let emptyArr = []
+        if (seperated.length !== 0){
+            seperated.forEach(item => {
+                emptyArr.push([0,item.length])
             })
-            setTrack(emptyObj)
+            console.log(emptyArr)
+            setTrack(emptyArr)
         }
-    },[loaded])
+    },[seperated])
 
     useEffect(()=> {
-        if (Object.keys(track).length !== 0){
-            if (fetchedData[track.homa].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
-                // console.log(`${fetchedData[track.empty].url}`)
-                setIsImage(false)
-            } else {
-                setIsImage(true)
-                // console.log(`${fetchedData[track.empty].url}`)
-        }}
+        let type = []
+        if (track.length !== 0){
+            seperated.forEach((item, index)=>{
+                if (seperated[index][track[index][0]].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
+                    type.push(false)
+                } else {
+                    console.log("image")
+                    type.push(true)
+                    // setIsImage(true)
+                    // console.log(`${fetchedData[track.empty].url}`)
+            }})
+            console.log(type)
+            setIsImage(type)
+            } 
     },[track])
 
-    const goForward = (name) => {
+    const goForward = (index) => {
         let data = {...track}
-        if (data.homa !== Object.keys(fetchedData).length -1 ){
-            data.homa ++
+        if (data[index][0]+1 !== data[index][1] ){
+            data[index][0] ++ 
             setTrack(data)
         } else {
-            data.homa = 0 
+            data[index][0] = 0 
             setTrack(data)
         }
     }
 
-    const goBack = (name) => {
+    const goBack = (index) => {
         let data = {...track}
-        if (data.homa !== 0){
-            data.homa --
+        if (data[index][0] !== 0){
+            data[index][0] --
             setTrack(data)
         } else {
-            data.homa = Object.keys(fetchedData).length-1
+            data[index][0] = data[index][1]-1
             setTrack(data)
         }
     }
@@ -99,45 +108,61 @@ const Home = (props) => {
 
     return(
         <>
-        <h1>Home</h1>
-        {isImage === true ? (
-        <div style={{width:"100vw", height:"100vw", border:"2px white solid", 
-                backgroundImage: `url('${Object.keys(track).length === 0? null : fetchedData[track.homa].url}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                }}>
-            <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{Object.keys(track).length === 0? null : fetchedData[track.homa].journeyname}</button>
-                <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
-            </div>
-            <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"70vw"}}>Left</button>
-            <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
-            <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
-                <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: fetchedData, current: "empty"}})}>View Journey Map</button>
-            </div>
+        <div style ={{height:"6vh"}}>
+        <h1 >Home</h1>
         </div>
-        ) : (
-            <div style={{width:"100vw", height:"100vw", border:"2px white solid", position: "relative"}}>
-            <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${fetchedData[track.homa].url}`}/>
-            <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
-            <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{Object.keys(track).length === 0? null : fetchedData[track.homa].journeyname}</button>
-                <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
-            </div>
-            <button onClick={()=> goBack(fetchedData[0].journeyname)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"70vw"}}>Left</button>
-            <button onClick={()=> goForward(fetchedData[0].journeyname)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"70vw"}}>Right</button>
-            <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "15vw", alignItems: "center"}}>
-                <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{Object.keys(track).length === 0? null : fetchedData[track.homa].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
-                <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
-                <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: fetchedData, current: "empty"}}) }>View Journey Map</button>
-            </div>
-            </div>
-        </div>
+
+        {seperated.length == 0 ? console.log("fuck") : (
+            seperated.map((item, index) => {
+                // let type = true 
+                return isImage[index] === true ? (
+                    <>
+                    <div style={{width:"100vw", height:"60vh", border:"2px white solid", 
+                            backgroundImage: `url('${track.length == 0 ? null : seperated[index][track[index][0]].url}')`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            }}>
+                        <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
+                            <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{track.length == 0 ? null : seperated[index][track[index][0]].journeyname}</button>
+                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                        </div>
+                        <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"44vh"}}>Left</button>
+                        <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"44vh"}}>Right</button>
+                        <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
+                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}})}>View Journey Map</button>
+                        </div>
+                    </div>
+                    <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
+                        <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
+                    </div>
+                    </>
+                    
+                    ) : (
+                        <>
+                        <div style={{width:"100vw", height:"60vh", border:"2px white solid", position: "relative"}}>
+                        <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${track.length == 0 ? null : seperated[index][track[index][0]].url}`}/>
+                        <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
+                        <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
+                            <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{track.length == 0 ? null : seperated[index][track[index][0]].journeyname}</button>
+                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                        </div>
+                        <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"44vh"}}>Left</button>
+                        <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"44vh"}}>Right</button>
+                        <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
+                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
+                            <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}}) }>View Journey Map</button>
+                        </div>
+                        </div>
+                    </div>
+                    <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
+                        <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
+                    </div>
+                    </>
+                    )
+            })
         )}
-        <div style={{width:"100vw", height:"27vh", border:"2px white solid"}}>
-            <Map1 track={track} fetchedData={fetchedData} />
-        </div>
         </>
     )
 }
