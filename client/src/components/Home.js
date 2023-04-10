@@ -22,7 +22,6 @@ const Home = (props) => {
     .then(data => {
         const reversed = data.reverse()
         setFetchedData(reversed)
-        console.log(reversed)
         setLoaded(true)
     })
     .catch(error => console.error(error));
@@ -47,7 +46,6 @@ const Home = (props) => {
         seperatedJourneys.map(item => {
             ordered.push(item.reverse())
         })
-        console.log(ordered)
         setSeperated(ordered)
         }
     },[fetchedData])
@@ -58,7 +56,6 @@ const Home = (props) => {
             seperated.forEach(item => {
                 emptyArr.push([0,item.length])
             })
-            console.log(emptyArr)
             setTrack(emptyArr)
         }
     },[seperated])
@@ -70,12 +67,10 @@ const Home = (props) => {
                 if (seperated[index][track[index][0]].url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv)$/) != null) {
                     type.push(false)
                 } else {
-                    console.log("image")
                     type.push(true)
                     // setIsImage(true)
                     // console.log(`${fetchedData[track.empty].url}`)
             }})
-            console.log(type)
             setIsImage(type)
             } 
     },[track])
@@ -106,18 +101,27 @@ const Home = (props) => {
         setMuted(!muted);
       }
 
+    ////https://css-tricks.com/practical-css-scroll-snapping/
+
     return(
         <>
-        <div style ={{height:"6vh"}}>
-        <h1 >Home</h1>
-        </div>
+        {loaded == true? (
+                <div style ={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around"}}>
+                    <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white", display: fetchedData.length === 0 ? "none" : "block" }} onClick={() => navigate("/upload", { state: { name: fetchedData[0].journeyname } })}>Add step to {fetchedData[0].journeyname}</button>
+                    <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={() => navigate("/uploadnew")}>New Journey</button>
+                </div>
+            
+        ):(
+            console.log("loading")
+        )}
+        
 
-        {seperated.length == 0 ? console.log("fuck") : (
+        {seperated.length == 0 ? console.log("") : (
             seperated.map((item, index) => {
                 // let type = true 
                 return isImage[index] === true ? (
                     <>
-                    <div style={{width:"100vw", height:"60vh", border:"2px white solid", 
+                    <div key={index} style={{width:"100vw", height:"60vh", border:"2px white solid", 
                             backgroundImage: `url('${track.length == 0 ? null : seperated[index][track[index][0]].url}')`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
@@ -136,11 +140,12 @@ const Home = (props) => {
                     <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
                         <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
                     </div>
+                    <div style={{height:"4vh"}}></div>
                     </>
                     
                     ) : (
                         <>
-                        <div style={{width:"100vw", height:"60vh", border:"2px white solid", position: "relative"}}>
+                        <div key = {index} style={{width:"100vw", height:"60vh", border:"2px white solid", position: "relative"}}>
                         <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${track.length == 0 ? null : seperated[index][track[index][0]].url}`}/>
                         <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
                         <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
@@ -159,6 +164,7 @@ const Home = (props) => {
                     <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
                         <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
                     </div>
+                    <div style={{height:"4vh"}}></div>
                     </>
                     )
             })

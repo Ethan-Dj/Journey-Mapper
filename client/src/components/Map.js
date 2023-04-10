@@ -1,4 +1,4 @@
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { version } from 'mapbox-gl';
 import ReactMapGL, { Marker, Popup, Source, Layer } from "react-map-gl";
 import { useEffect , useState } from "react";
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW4xMjEiLCJhIjoiY2wzYmV2bW50MGQwbTNpb2lxdm56cGdpNyJ9.-wLLlz-sFhNPiXCyVCQ6kg';
@@ -12,17 +12,21 @@ const Map1 = (props) => {
     height: "27vh",
     latitude: 0,
     longitude: 0,
-    zoom: 15
+    zoom: 15,
+    dragPan: false,
+    scrollZoom: false,
+    touchZoom: false,
+    doubleClickZoom: false,
+    dragRotate: false
   });
   
   useEffect(() => {
     if (props.fetchedData && props.fetchedData.length > 0) {
-      console.log("this is data that was sent", props.fetchedData)
-      console.log("this is track", props.track)
       setViewport(prevViewport => ({
         ...prevViewport,
         latitude: props.fetchedData[0].lat,
         longitude: props.fetchedData[0].long,
+        scrollZoom: false
       }));
     }
   }, [props.fetchedData]);
@@ -39,11 +43,17 @@ const Map1 = (props) => {
   };
 
   useEffect(()=>{
-    console.log(props.track)
     if (Array.isArray(props.fetchedData)){
         const lines1 = props.fetchedData.map(item => [item.long, item.lat])
         setLines(lines1)
     }
+  },[props])
+
+  useEffect(()=>{
+    setViewport(prevViewport => ({
+      ...prevViewport,
+      scrollZoom: false
+    }));
   },[props])
 
     const CustomMarker = ({ latitude, longitude, index }) => {
@@ -51,7 +61,7 @@ const Map1 = (props) => {
         <Marker key={index} longitude={longitude} latitude={latitude}>
             <div>
             <span style={{backgroundColor: props.fetchedData.length - index == 0? "#1ec71e": (
-                        props.fetchedData.length - index + 1 == props.fetchedData.length == 0? "red" : "#FF6400"), 
+                        props.fetchedData.length - index + 1 == props.fetchedData.length == 0? "#FF6400" : "red"), 
                         border: "none", fontSize:"13px"
                         }}>
                 <b>{props.fetchedData.length - index + 1}</b>
@@ -61,14 +71,9 @@ const Map1 = (props) => {
         );
   };
 
-  // const [prevProps, setPrevProps] = useState(0)
-
-
   useEffect(()=>{
     if (mount == true){
       changeView()
-      console.log("Wpaoskdjfklajsdflkjasdf", props.fetchedData)
-      console.log("askjfnaksdjfka:", props.track)
     } else {
       didMount(true)
     }
@@ -83,26 +88,44 @@ const Map1 = (props) => {
       center: [props.fetchedData[props.track[0]].long, props.fetchedData[props.track[0]].lat],
       essential: true,
       duration: 1300,
-      zoom:15
+      zoom:15,
+      dragPan: false,
+      scrollZoom: false,
+      touchZoom: false,
+      doubleClickZoom: false,
+      dragRotate: false
       });
     }
   }
-  
 
+ 
   return (
     <>
+    {/* <div className="container">
+      <div className="background"> */}
       <ReactMapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         mapboxApiAccessToken={mapboxgl.accessToken}
-        onMove={evt => setViewport(evt.viewport)}
         onLoad={(map)=>{
           setMapTest(map.target)
         }}
+        onMove={evt => {
+          setViewport(evt.viewport)
+        }}
+        interactive={{
+          dragPan: false,
+          scrollZoom: false,
+          touchZoomRotate: false
+        }}
+        dragPan={false}
+        dragRotate={false}
+        touchZoomRotate={false}
+        scrollZoom={false}
       >
     {Array.isArray(props.fetchedData) && props.fetchedData.length > 0 && (
         props.fetchedData.map((item, index) => (
-            <CustomMarker latitude={item.lat} longitude={item.long} index={props.fetchedData.length - index}
+            <CustomMarker key={index} latitude={item.lat} longitude={item.long} index={props.fetchedData.length - index}
             style={{
                 width: "30px", 
                 height: "30px", 
@@ -131,27 +154,11 @@ const Map1 = (props) => {
           />
         </Source>
       </ReactMapGL>
+      {/* </div>
+      <div className="overlay"></div>
+      </div> */}
     </>
   )
 }
 
 export default Map1;
-
-
-
-  // const changeView = (data1, dataMinus) => {
-  //   if (true){
-  //   for (let i = 0; i < 11; i++) {
-  //     setTimeout(() => {
-  //       const lat = (((Number(lines[data1][1]) - Number(lines[dataMinus][1]))/10)*i) + Number(lines[dataMinus][1])
-  //       const long = (((Number(lines[data1][0]) - Number(lines[dataMinus][0]))/10)*i) + Number(lines[dataMinus][0])
-  //       setViewport({
-  //         width: "100vw",
-  //         height: "27vh",
-  //         latitude: lat,
-  //         longitude: long,
-  //         zoom: 14
-  //       });
-  //     }, 300 * i / 10);
-  //   }} 
-  // };

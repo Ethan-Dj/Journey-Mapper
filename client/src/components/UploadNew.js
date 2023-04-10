@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useLocation } from "react-router-dom"
 
 const UploadNewJourney = (props) => {
   const navigate = useNavigate()
+  const location1 = useLocation()
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
@@ -86,7 +87,7 @@ const UploadNewJourney = (props) => {
       lat: location.lat,
       imgTime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
-      journeyName: "empty",
+      journeyName: location1.state.name,
       userId: 1
 
     }),
@@ -104,11 +105,19 @@ const UploadNewJourney = (props) => {
   if (loading === false){
   return ( 
     <> 
-      <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
-        <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
-        <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
+      {/* <div style = {{height:"6vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-around",borderBottom:"2px solid white" }}>
+        <button style={{width:"72px", margin:"0px 20px", height: "30px", border: "solid 2px white"}}>Cancel</button>
+        <h4 style={{fontWeight: "500"}}><u>Upload to {location1.state.name}8888</u></h4>
         <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
-      </div>      
+      </div>       */}
+
+      <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center"}}>
+        <button style={{display:"flex", flexDirection:"column", justifyContent:"center", border: "solid 2px white", marginLeft:"5vw"}} onClick={()=> navigate("/")}>Go back</button>
+      </div>   
+
+      <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"#7D7DFF", justifyContent:"center"}}>
+        <button style={{border:"none", height: "30px", fontSize:"16px", borderRadius:"6px"}}>Upload to {location1.state.name}</button>
+      </div>
 
        <div>
       <form style={{display: "flex", flexDirection:"column", alignItems: "center"}}onSubmit = {(e)=> handleSubmit(e)}>
@@ -127,8 +136,7 @@ const UploadNewJourney = (props) => {
           }
         </div>
         
-        <input style={{marginTop:"20px", marginBottom:"20px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
-        <p style={{fontSize:"12px", margin:"0"}}>Your journey must have a name...</p>
+        <input style={{marginTop:"20px", marginBottom:"20px", height: "30px", border: "solid 2px white"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
         <p style={{fontSize:"12px", margin:"0"}}>Only upload photos and videos please...</p>
       </form>
       </div>

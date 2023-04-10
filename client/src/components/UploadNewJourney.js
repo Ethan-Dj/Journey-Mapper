@@ -107,11 +107,13 @@ const UploadNewJourney = (props) => {
   if (loading === false){
   return ( 
     <> 
-      <div style = {{height:"8vh",display:"flex", flexDirection:"row", alignItems: "center", justifyContent:"space-between",borderBottom:"2px solid white" }}>
-        <button style={{width:"72px", margin:"0px 20px"}}>Cancel</button>
-        <h3 style={{fontWeight: "500"}}><u>New Journey</u></h3>
-        <div style={{width:"72px", height: "30px", margin:"0px 20px"}}></div>
-      </div>      
+      <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center"}}>
+        <button style={{display:"flex", flexDirection:"column", justifyContent:"center", border: "solid 2px white", marginLeft:"5vw"}} onClick={()=> navigate("/")}>Go back</button>
+      </div>   
+
+      <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"#7D7DFF", justifyContent:"center"}}>
+        <button style={{border:"none", height: "30px", fontSize:"16px", borderRadius:"6px"}}>Create New Journey</button>
+      </div>  
 
       
       <form style={{display: "flex", flexDirection:"column", alignItems: "center", marginTop:"20px"}}>
@@ -136,7 +138,7 @@ const UploadNewJourney = (props) => {
           }
         </div>
         
-        <input style={{marginTop:"20px", marginBottom:"20px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
+        <input style={{marginTop:"20px", marginBottom:"20px", display:"flex", flexDirection:"column", justifyContent:"center", border: "solid 2px white", height: "30px"}} id="submit" type="submit" value="Upload photo/video and location to journey"/>
         <p style={{fontSize:"12px", margin:"0"}}>Your journey must have a name...</p>
         <p style={{fontSize:"12px", margin:"0"}}>Only upload photos and videos please...</p>
       </form>
