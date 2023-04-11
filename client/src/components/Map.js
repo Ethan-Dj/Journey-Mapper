@@ -9,7 +9,7 @@ const Map1 = (props) => {
 
   const [viewport, setViewport] = useState({
     width: "100vw",
-    height: "27vh",
+    height: "33vh",
     latitude: 0,
     longitude: 0,
     zoom: 15,
@@ -87,7 +87,7 @@ const Map1 = (props) => {
       mapTest.flyTo({
       center: [props.fetchedData[props.track[0]].long, props.fetchedData[props.track[0]].lat],
       essential: true,
-      duration: 1300,
+      duration: 4000,
       zoom:15,
       dragPan: false,
       scrollZoom: false,

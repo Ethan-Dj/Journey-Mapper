@@ -3,8 +3,10 @@ import { useState, useRef } from "react";
 import Map1 from "./Map"
 import { Map } from "mapbox-gl";
 import { useNavigate } from "react-router-dom"
+import createScrollSnap from 'scroll-snap'
 
 const Home = (props) => {
+
     const navigate = useNavigate()
 
     const [fetchedData, setFetchedData]=useState({})
@@ -104,9 +106,15 @@ const Home = (props) => {
     ////https://css-tricks.com/practical-css-scroll-snapping/
 
     return(
-        <>
+        <div style={{scrollSnapType: "mandatory",
+            scrollSnapType: "y mandatory",
+            overflow:"scroll",
+            height:"100vh",
+            scrollSnapDestination: "0% 20%",
+            scrollSnapCoordinate: "70% 0%"
+          }}>
         {loaded == true? (
-                <div style ={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around"}}>
+                <div style ={{backgroundColor:"#1012FA" ,width: "100vw", zIndex:"3",position: "fixed", bottom:"0", height:"7vh", display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around"}}>
                     <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white", display: fetchedData.length === 0 ? "none" : "block" }} onClick={() => navigate("/upload", { state: { name: fetchedData[0].journeyname } })}>Add step to {fetchedData[0].journeyname}</button>
                     <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={() => navigate("/uploadnew")}>New Journey</button>
                 </div>
@@ -115,12 +123,12 @@ const Home = (props) => {
             console.log("loading")
         )}
         
-
+        <div>
         {seperated.length == 0 ? console.log("") : (
             seperated.map((item, index) => {
                 // let type = true 
                 return isImage[index] === true ? (
-                    <>
+                    <div className="child" style = {{scrollSnapAlign: "start", scrollSnapDestination:"0% 10%"}}>
                     <div key={index} style={{width:"100vw", height:"60vh", border:"2px white solid", 
                             backgroundImage: `url('${track.length == 0 ? null : seperated[index][track[index][0]].url}')`,
                             backgroundSize: 'cover',
@@ -137,14 +145,14 @@ const Home = (props) => {
                             <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}})}>View Journey Map</button>
                         </div>
                     </div>
-                    <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
+                    <div style={{width:"100vw", height:"33vh", border:"2px white solid"}}>
                         <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
                     </div>
-                    <div style={{height:"4vh"}}></div>
-                    </>
+                    <div style={{height:"7vh"}}></div>
+                    </div>
                     
                     ) : (
-                        <>
+                        <div className="child" style = {{scrollSnapAlign: "start", scrollSnapDestination:"0% 10%"}}>
                         <div key = {index} style={{width:"100vw", height:"60vh", border:"2px white solid", position: "relative"}}>
                         <video autoPlay loop muted={muted} style={{ width: "100%",  objectFit: "cover"}} controls src={`${track.length == 0 ? null : seperated[index][track[index][0]].url}`}/>
                         <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
@@ -161,15 +169,17 @@ const Home = (props) => {
                         </div>
                         </div>
                     </div>
-                    <div style={{width:"100vw", height:"30vh", border:"2px white solid"}}>
+                    <div style={{width:"100vw", height:"33vh", border:"2px white solid"}}>
                         <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
                     </div>
-                    <div style={{height:"4vh"}}></div>
-                    </>
+                    <div style={{height:"7vh"}}></div>
+                    </div>
                     )
+                    
             })
         )}
-        </>
+        </div>
+        </div>
     )
 }
 
