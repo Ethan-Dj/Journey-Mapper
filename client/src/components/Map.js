@@ -87,7 +87,7 @@ const Map1 = (props) => {
       mapTest.flyTo({
       center: [props.fetchedData[props.track[0]].long, props.fetchedData[props.track[0]].lat],
       essential: true,
-      duration: 4000,
+      duration: 3000,
       zoom:15,
       dragPan: false,
       scrollZoom: false,

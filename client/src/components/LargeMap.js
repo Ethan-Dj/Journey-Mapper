@@ -78,8 +78,7 @@ const Map1 = (props) => {
                         index == 1? "#1ec71e" : "#FF6400"), 
                         border: "none", fontSize:"13px"
                         }}>
-                <b style={{color: index == location.state.fetchedData.length? "red": (
-                        index == 1? "#1ec71e" : "#FF6400")}}>0</b>
+                <b style={{color: "white"}}>{index}</b>
             </span>
             </div>
         </Marker>
@@ -106,7 +105,7 @@ const Map1 = (props) => {
         <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? `${location.state.fetchedData[0].locationname} - ${location.state.fetchedData[location.state.fetchedData.length-1].locationname}` : null}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
     </div>
 
-    <div style={{height:"70vh", width:"100vw"}}>
+    <div style={{height:"82vh", width:"100vw"}}>
       <ReactMapGL id="map"
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
@@ -147,6 +146,7 @@ const Map1 = (props) => {
       </ReactMapGL>
     </div>
     <div style={{height:"6vh", display:"flex", flexDirection:"row", alignItems:"center", backgroundColor:"#7D7DFF", justifyContent:"center"}}>
+    <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? `${location.state.fetchedData.length} locations` : null}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></button>
         <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{Array.isArray(location.state.fetchedData) && location.state.fetchedData.length > 0 ? `${location.state.fetchedData[0].imgtimedisplay} - ${location.state.fetchedData[location.state.fetchedData.length-1].imgtimedisplay}` : null}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
     </div>
     </>
