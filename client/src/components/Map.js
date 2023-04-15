@@ -101,8 +101,6 @@ const Map1 = (props) => {
  
   return (
     <>
-    {/* <div className="container">
-      <div className="background"> */}
       <ReactMapGL
         {...viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
@@ -154,9 +152,6 @@ const Map1 = (props) => {
           />
         </Source>
       </ReactMapGL>
-      {/* </div>
-      <div className="overlay"></div>
-      </div> */}
     </>
   )
 }

@@ -137,17 +137,27 @@ const Home = (props) => {
                             }}>
                         <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
                             <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{track.length == 0 ? null : seperated[index][track[index][0]].journeyname}</button>
-                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
                         </div>
                         <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"44vh"}}>Left</button>
                         <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"44vh"}}>Right</button>
                         <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
-                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
-                            <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}})}>View Journey Map</button>
+                            <button style={{opacity: "0", border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{ opacity: "0", marginRight:"5vw", height: "30px", border: "solid 2px white"}}>View Journey Map</button>
                         </div>
                     </div>
-                    <div style={{width:"100vw", height:"33vh", borderTop:"2px white solid"}}>
-                        <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
+                    <div style={{position: "relative", width:"100vw", height:"33vh", borderTop:"2px white solid"}}>
+                        <Map1 track={track.length == 0 ? null : track[index]} fetchedData={seperated.length == 0 ? null : seperated[index]} />
+                        <div style={{position: "absolute", top: 0, left: 0, zIndex: 1}}>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: "8vh", alignItems: "center", width: "100%"}}>
+                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}})}>View Journey Map</button>
+                        </div>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: "8vh", alignItems: "center", width: "100%"}}>
+                            <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"10vh", height:"20vh"}}>Left</button>
+                            <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"10vh", height:"20vh"}}>Right</button>
+                        </div>
+                        </div>
                     </div>
                     <div style={{height:"0vh"}}></div>
                     </div>
@@ -159,19 +169,29 @@ const Home = (props) => {
                         <div style={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", zIndex: "1"}}>
                         <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
                             <button style={{border:"none", marginLeft:"5vw", height: "30px", fontSize:"16px", borderRadius:"6px"}}>{track.length == 0 ? null : seperated[index][track[index][0]].journeyname}</button>
-                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{border:"none", marginRight:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
                         </div>
                         <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"0vw", height:"44vh"}}>Left</button>
                         <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"0vw", height:"44vh"}}>Right</button>
                         <div style={{display:"flex", flexDirection: "row", justifyContent:"space-between", height: "8vh", alignItems: "center"}}>
-                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{opacity: "0", border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].imgtimedisplay.replace(/\-/g, " ")}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
                             <button style={{height: "30px", border: "none", backgroundColor: "transparent", display:muted ? "block" : "none" }} onClick={handleToggleMute}>Unmute</button>
-                            <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}}) }>View Journey Map</button>
+                            <button style={{ opacity: "0", marginRight:"5vw", height: "30px", border: "solid 2px white"}} >View Journey Map</button>
                         </div>
                         </div>
                     </div>
-                    <div style={{width:"100vw", height:"33vh", borderTop:"2px white solid"}}>
-                        <Map1 track={track.length == 0? null : track[index]} fetchedData={seperated.length == 0? null : seperated[index]} />
+                    <div style={{position: "relative", width:"100vw", height:"33vh", borderTop:"2px white solid"}}>
+                        <Map1 track={track.length == 0 ? null : track[index]} fetchedData={seperated.length == 0 ? null : seperated[index]} />
+                        <div style={{position: "absolute", top: 0, left: 0, zIndex: 1}}>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: "8vh", alignItems: "center", width: "100%"}}>
+                            <button style={{border:"#1012FA 1px solid", marginLeft:"5vw", height: "30px", borderRadius:"6px"}}><i>{track.length == 0 ? null : seperated[index][track[index][0]].locationname}<u style={{opacity:"0", fontSize:"4px"}}>.-</u></i></button>
+                            <button style={{marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={()=> navigate("/largemap", {state: {fetchedData: seperated[index].reverse(), current: "empty"}})}>View Journey Map</button>
+                        </div>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: "8vh", alignItems: "center", width: "100%"}}>
+                            <button onClick={()=> goBack(index)} style ={{opacity: "0", width:"45vw", marginRight:"5vw", marginTop:"10vh", height:"20vh"}}>Left</button>
+                            <button onClick={()=> goForward(index)}style={{opacity: "0", width:"45vw", marginLeft:"5vw", marginTop:"10vh", height:"20vh"}}>Right</button>
+                        </div>
+                        </div>
                     </div>
                     <div style={{height:"0vh"}}></div>
                     </div>
