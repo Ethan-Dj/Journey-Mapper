@@ -11,7 +11,11 @@ const _login = async (req, res) => {
         if (result[0].email == req.body.email){
             const match = await bcrypt.compare(req.body.password, result[0].password)
             if (match == true){
-                res.status(200).json({id:result[0].id})
+                const email = req.body.username
+                const email1 = {email: email }
+                const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
+
+                res.status(200).json({id:result[0].id, token: token})
             } else {
                 res.status(500).json({id: "error"})
             }
@@ -23,15 +27,19 @@ const _login = async (req, res) => {
         // res.status(200).json(data);
     } catch (err) {
         console.log("no");
-        res.status(500).json({ id: "error" });
+        res.status(500).json({ id: "error " });
     }
 };
 
 const _register = async (req, res) => {
     try {
       const result = await register(req.body);
-      console.log("yes");
-      res.json({ id: result[0] });
+
+      const email = req.body.username
+      const email1 = {email: email }
+      const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
+
+      res.status(200).json({id:result[0].id, token: token})
     } catch (err) {
       console.log("no", err);
       res.json({ id: "error" });

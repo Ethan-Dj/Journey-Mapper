@@ -32,12 +32,12 @@ const Login = (props) => {
             if (data.id == "error"){
                 setExsists(true)
             } else{ 
-            console.log(data.id); // Access the msg field from the parsed JSON response
-            // navigate("/", {state :{id: data.id}})
+            console.log(data); // Access the msg field from the parsed JSON response
+            // navigate("/", {state :{id: data.id, token: data.token}})
             }
         })
         .catch(err => {
-            console.log("fuck")
+            console.log("error")
         })
       }
 
@@ -64,7 +64,7 @@ const Login = (props) => {
             if (data.id == "error"){
                 setWrong(true)
             } else {
-                // navigate("/", {state :{id: data.id}})
+                // navigate("/", {state :{id: data.id, token: data.token}})
                 console.log(data)
             }
             //console.log(data)

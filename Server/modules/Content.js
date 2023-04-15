@@ -2,18 +2,6 @@ const db = require('../Database/db.js')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// const register = async (value) => {
-//     const {email, password} = value;
-
-//     const salt = await bcrypt.genSalt();
-//     const hashPassword = await bcrypt.hash(password,salt);
-
-//     const obj = {email:email, password: hashPassword}
-//     return db("users")
-//     .insert(obj)
-// }
-
-
 const login = async (value) => {
     const { email, password } = value;
     const result = await db("users") 
