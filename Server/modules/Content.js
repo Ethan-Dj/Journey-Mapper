@@ -16,9 +16,11 @@ const jwt = require('jsonwebtoken');
 
 const login = async (value) => {
     const { email, password } = value;
-    return db("users") 
+    const result = await db("users") 
         .select("*")
-        .where("email", email);
+        .where("email", email)
+        .returning('id')
+    return result
 }
 
 const register = async (value) => {

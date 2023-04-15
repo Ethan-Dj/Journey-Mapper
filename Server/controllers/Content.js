@@ -1,36 +1,40 @@
 const {getAllImages, uploadImages, register, login} = require("../modules/Content.js")
 const { cloudinary } = require('../utils/cloudinary');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+
 
 const _login = async (req, res) => {
     console.log(req.body.email);
     try {
-        const data = await login(req.body);
-        console.log("yes");
-        res.status(200).json(data);
+        const result = await login(req.body);
+        if (result[0].email == req.body.email){
+            const match = await bcrypt.compare(req.body.password, result[0].password)
+            if (match == true){
+                res.status(200).json({id:result[0].id})
+            } else {
+                res.status(500).json({id: "error"})
+            }
+        } else {
+            res.status(500).json({id: "error"})
+        }
+        
+
+        // res.status(200).json(data);
     } catch (err) {
         console.log("no");
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ id: "error" });
     }
 };
-
-// const login = async (value) => {
-//     const { email, password } = value;
-//     return db("testimg") 
-//         .select("*")
-//         .where("email", email);
-// }
-
-
-
 
 const _register = async (req, res) => {
     try {
       const result = await register(req.body);
       console.log("yes");
-      res.json({ msg: result[0] });
+      res.json({ id: result[0] });
     } catch (err) {
       console.log("no", err);
-      res.json({ msg: "error" });
+      res.json({ id: "error" });
     }
   };
 
