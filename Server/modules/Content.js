@@ -7,11 +7,11 @@ const login = async (value) => {
     const email = value.email
     console.log("working inside the login func")
     console.log("email,", email)
-    await db("users") 
+    const result = await db("users") 
         .select("*")
         .where("email", email)
-        .then(data=> console.log(data))
-        console.log("result:", result)
+        .returning("id")
+    return result
     }
     catch (err){
         console.log(err)
