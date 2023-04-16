@@ -8,7 +8,6 @@ const _login = async (req, res) => {
     console.log(req.body.email,"fuck");
     try {
         const result = await login(req.body);
-        console.log(result)
         if (result[0].email == req.body.email){
             const match = await bcrypt.compare(req.body.password, result[0].password)
             if (match == true){
