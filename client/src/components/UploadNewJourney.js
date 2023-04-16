@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
+import { useLocation } from 'react-router-dom';
 
 const UploadNewJourney = (props) => {
   const navigate = useNavigate()
+ 
+  const location1 = useLocation()
+
+  const [id, setId] = useState(location1.state.id)
+  const [token, setToken] = useState(location1.state.token)
 
   const [selectedImage, setSelectedImage] = useState(null)
   const [changeButton, setChangeButton] = useState("Choose Photo/Video")
@@ -86,14 +92,14 @@ const UploadNewJourney = (props) => {
       imgTime: imgTime,
       imgTimeDisplay: imgTimeDisplay,
       journeyName: name,
-      userId: 1
+      userId: id
 
     }),
     headers: {'Content-type':'application/json'}
     })
     .then(res => {
       setLoading(false)
-      navigate("/")
+      navigate("/", {state :{id: id, token: token}})
       console.log(res)
 
     })

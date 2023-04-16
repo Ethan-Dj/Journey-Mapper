@@ -3,9 +3,17 @@ import { useState, useRef } from "react";
 import Map1 from "./Map"
 import { Map } from "mapbox-gl";
 import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 import createScrollSnap from 'scroll-snap'
 
 const Home = (props) => {
+    const location = useLocation()
+
+    useEffect(()=>{
+        if (localStorage.length == 0){
+            navigate("/login")
+        } 
+    },[])
 
     const navigate = useNavigate()
 
@@ -18,16 +26,38 @@ const Home = (props) => {
 
     useEffect(()=>{setMuted(true)},[track])
 
-    useEffect(()=>{
-    fetch('http://localhost:3001/api/images')
-    .then(response => response.json())
-    .then(data => {
-        const reversed = data.reverse()
-        setFetchedData(reversed)
-        setLoaded(true)
-    })
-    .catch(error => console.error(error));
-    },[])
+    useEffect(() => {
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'token': JSON.parse(localStorage.getItem("data"))[1],
+            'id': JSON.parse(localStorage.getItem("data"))[0]
+          }
+        };
+      
+        fetch('http://localhost:3001/api/images', options)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            if (data[0]=="empty"){
+                navigate("/login")
+            } else {
+                if (localStorage.length == 0){
+                    navigate("/login")
+                }
+                if (data.length == 0){
+                    navigate("/uploadnewstart", {state :{id: JSON.parse(localStorage.getItem("data"))[0]}})
+                } else {
+                const reversed = data.reverse()
+                setFetchedData(reversed)
+                setLoaded(true)
+                }
+            }
+
+          })
+          .catch(error => console.error(error));
+      }, []);
 
     useEffect(()=>{
         if (Object.keys(fetchedData).length !== 0 && loaded == true){
@@ -118,6 +148,10 @@ const Home = (props) => {
                 <div style ={{backgroundColor:"#1012FA" ,width: "100vw", zIndex:"3",position: "fixed", bottom:"0", height:"5vh", display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around"}}>
                     <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white", display: fetchedData.length === 0 ? "none" : "block" }} onClick={() => navigate("/upload", { state: { name: fetchedData[0].journeyname } })}>Add step to {fetchedData[0].journeyname}</button>
                     <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={() => navigate("/uploadnew")}>New Journey</button>
+                    <button style={{ marginRight:"5vw", height: "30px", border: "solid 2px white"}} onClick={() =>{
+                        localStorage.clear();
+                        navigate("/login")
+                    } }>Log Out</button>
                 </div>
             
         ):(

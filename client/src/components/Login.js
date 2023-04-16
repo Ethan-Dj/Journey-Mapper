@@ -29,11 +29,16 @@ const Login = (props) => {
             return res.json()
           
         }).then(data => {
+            console.log(data)
             if (data.id == "error"){
                 setExsists(true)
             } else{ 
             console.log(data); // Access the msg field from the parsed JSON response
-            // navigate("/", {state :{id: data.id, token: data.token}})
+            const key = 'data';
+            const value = JSON.stringify([data.id, data.token]);
+            localStorage.setItem(key, value);
+            console.log(data.id)
+            navigate("/", {state :{id: data.id, token: data.token}})
             }
         })
         .catch(err => {
@@ -60,11 +65,14 @@ const Login = (props) => {
               return res.json()
             
           }).then(data => {
-            console.log(data)
-            if (data.id == "error"){
+            if (data.id === "error"){
+                console.log("here")
                 setWrong(true)
             } else {
-                // navigate("/", {state :{id: data.id, token: data.token}})
+                const key = 'data';
+                const value = JSON.stringify([data.id, data.token]);
+                localStorage.setItem(key, value);
+                navigate("/", {state :{id: data.id, token: data.token}})
                 console.log(data)
             }
             //console.log(data)

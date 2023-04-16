@@ -11,20 +11,21 @@ const login = async (value) => {
     return result
 }
 
-const register = async (value) => {
+const register = async (value, token) => {
     const {email, password} = value;
 
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password,salt);
 
-    const obj = {email:email, password: hashPassword}
+    const obj = {email:email, password: hashPassword, token: token}
     const result = await db("users").insert(obj).returning('id');
     return result;
 }
 
-const getAllImages = () => {
+const getAllImages = (id) => {
     return db("testimg") 
     .select("*")
+    .where("userid", id)
 }
 
 const uploadImages = (value) => {
@@ -32,8 +33,6 @@ const uploadImages = (value) => {
     return db("testimg")
     .insert(value)
 }
-
-
 
 module.exports = {
     getAllImages, 

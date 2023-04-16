@@ -27,19 +27,20 @@ const _login = async (req, res) => {
         // res.status(200).json(data);
     } catch (err) {
         console.log("no");
-        res.status(500).json({ id: "error " });
+        res.status(500).json({ id: "error" });
     }
 };
 
 const _register = async (req, res) => {
     try {
-      const result = await register(req.body);
 
-      const email = req.body.username
-      const email1 = {email: email }
-      const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
+        const email = req.body.username
+        const email1 = {email: email }
+        const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
 
-      res.status(200).json({id:result[0].id, token: token})
+        const result = await register(req.body, token);
+
+        res.status(200).json({id:result[0].id, token: token})
     } catch (err) {
       console.log("no", err);
       res.json({ id: "error" });
@@ -47,7 +48,7 @@ const _register = async (req, res) => {
   };
 
 const _getAllImages = (req,res) => {
-    getAllImages()
+    getAllImages(req.headers.id)
     .then(data => {
         res.json(data)
     })
