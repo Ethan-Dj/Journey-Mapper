@@ -9,8 +9,9 @@ const _login = async (req, res) => {
     try {
         console.log("inside the try first line")
         // const result = await login(req.body);
-        console.log("returned id:", result)
-        if (result[0].email == req.body.email){
+        // console.log("returned id:", result)
+        // if (result[0].email == req.body.email){
+        if (true){
             const match = await bcrypt.compare(req.body.password, result[0].password)
             console.log("email exsists now checking matching passwords")
             if (match == true){
