@@ -15,7 +15,7 @@ const _login = async (req, res) => {
             // const match = await bcrypt.compare(req.body.password, result[0].password)
             const match = await bcrypt.compare(req.body.password, "shit")
             console.log("email exsists now checking matching passwords")
-            if (match == true){
+            if (true){
                 const email1 = {email: req.body.email }
                 const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
                 console.log("we created a token")
