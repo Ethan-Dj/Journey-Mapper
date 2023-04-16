@@ -26,8 +26,6 @@ const Home = (props) => {
 
     useEffect(()=>{setMuted(true)},[track])
 
-
-    
     useEffect(() => {
         if (localStorage.length == 0){
             navigate("/login")
