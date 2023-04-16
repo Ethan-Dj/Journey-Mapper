@@ -26,13 +26,12 @@ const Home = (props) => {
 
     useEffect(()=>{setMuted(true)},[track])
 
-    useEffect(()=>{
-        if (localStorage.length == 0){
-            navigate("/login")
-        }
-    },[])
+
     
     useEffect(() => {
+        if (localStorage.length == 0){
+            navigate("/login")
+        } else {
         const options = {
           method: 'GET',
           headers: {
@@ -60,10 +59,10 @@ const Home = (props) => {
                 setLoaded(true)
                 }
             }
-
+            
           })
           .catch(error => console.error(error));
-      }, []);
+      }}, []);
 
     useEffect(()=>{
         if (Object.keys(fetchedData).length !== 0 && loaded == true){
