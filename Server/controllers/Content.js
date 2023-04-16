@@ -5,20 +5,16 @@ const jwt = require('jsonwebtoken');
 
 
 const _login = async (req, res) => {
-    console.log("email:", req.body.email);
+    console.log(req.body.email,"fuck");
     try {
-        console.log("inside the try first line")
-        // const result = await login(req.body);
-        // console.log("returned id:", result)
-        // if (result[0].email == req.body.email){
-        if (true){
-            // const match = await bcrypt.compare(req.body.password, result[0].password)
-            const match = await bcrypt.compare(req.body.password, "shit")
-            console.log("email exsists now checking matching passwords")
-            if (true){
-                const email1 = {email: req.body.email }
+        const result = await login(req.body);
+        if (result[0].email == req.body.email){
+            const match = await bcrypt.compare(req.body.password, result[0].password)
+            if (match == true){
+                const email = req.body.username
+                const email1 = {email: email }
                 const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
-                console.log("we created a token")
+
                 res.status(200).json({id:result[0].id, token: token})
             } else {
                 res.status(500).json({id: "error"})
@@ -34,7 +30,9 @@ const _login = async (req, res) => {
 
 const _register = async (req, res) => {
     try {
-        const email1 = {email: req.body.email }
+
+        const email = req.body.username
+        const email1 = {email: email }
         const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
 
         const result = await register(req.body, token);
