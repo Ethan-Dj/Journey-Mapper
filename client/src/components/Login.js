@@ -17,7 +17,7 @@ const Login = (props) => {
         const email = e.target.elements.email.value;
         const password = e.target.elements.password.value;
       
-        await fetch('http://localhost:3001/api/register', {
+        await fetch('https://kotap.onrender.com/api/register', {
           method: 'POST',
           body: JSON.stringify({
             email: email,
@@ -52,7 +52,7 @@ const Login = (props) => {
         const email = e.target.elements.email.value;
         const password = e.target.elements.password.value;
 
-        await fetch('http://localhost:3001/api/login', {
+        await fetch('https://kotap.onrender.com/api/login', {
             method: 'POST',
             body: JSON.stringify({
               email: email,

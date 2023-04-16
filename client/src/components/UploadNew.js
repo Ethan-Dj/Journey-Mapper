@@ -78,7 +78,7 @@ const UploadNewJourney = (props) => {
   const uploadImage = async (base64EncodedImage) => {
     console.log("loading")
     setLoading(true)
-    await fetch('http://localhost:3001/api/upload', {
+    await fetch('https://kotap.onrender.com/api/upload', {
     method: 'POST',
     body: JSON.stringify({
       data: base64EncodedImage,

@@ -36,7 +36,7 @@ const Home = (props) => {
           }
         };
       
-        fetch('http://localhost:3001/api/images', options)
+        fetch('https://kotap.onrender.com/api/images', options)
           .then(response => response.json())
           .then(data => {
             console.log(data)
