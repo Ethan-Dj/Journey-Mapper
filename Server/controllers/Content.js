@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const _login = async (req, res) => {
     console.log("email:", req.body.email);
     try {
+        console.log("inside the try first line")
         const result = await login(req.body);
         console.log("returned id:", result)
         if (result[0].email == req.body.email){
@@ -23,9 +24,6 @@ const _login = async (req, res) => {
         } else {
             res.status(500).json({id: "error"})
         }
-        
-
-        // res.status(200).json(data);
     } catch (err) {
         console.log("no");
         res.status(500).json({ id: "error" });

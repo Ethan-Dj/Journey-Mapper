@@ -4,11 +4,12 @@ const jwt = require('jsonwebtoken');
 
 const login = async (value) => {
     const { email, password } = value;
-    console.log(email, password)
+    console.log("working inside the login func")
     const result = await db("users") 
         .select("*")
         .where("email", email)
         .returning('id')
+        console.log("result:", result)
     return result
 }
 
