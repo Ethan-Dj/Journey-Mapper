@@ -5,7 +5,7 @@ dotenv.config()
 
 const db = knex({
     client: 'pg',
-    version: '7.2',
+    version: '13.9',
     connection: {
         host : process.env.DB_HOST,
         port : process.env.DB_PORT,
