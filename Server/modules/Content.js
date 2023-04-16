@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const login = async (value) => {
-    const { email, password } = value;
+    const email = value.email
     console.log("working inside the login func")
     console.log("email,", email)
     const result = await db("users") 
         .select("*")
-        .where("email", email)
-        .returning('id')
+        // .where("email", email)
+        // .returning('id')
         console.log("result:", result)
     return result
 }
