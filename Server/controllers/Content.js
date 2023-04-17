@@ -13,7 +13,6 @@ const _login = async (req, res) => {
             if (match == true){
                 const email1 = {email: req.body.email }
                 const token = jwt.sign(email1, process.env.ACCESS_TOKEN_SECRET)
-                res.set('Access-Control-Allow-Origin', 'https://mainkotap.onrender.com');
                 res.status(200).json({id:result[0].id, token: token})
             } else {
                 res.status(500).json({id: "error"})

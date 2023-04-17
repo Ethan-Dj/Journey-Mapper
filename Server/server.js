@@ -5,16 +5,14 @@ const bodyParser = require("body-parser")
 const path = require('path')
 
 const app = express();
-const corsOptions = {
-  origin: 'https://mainkotap.onrender.com',
-};
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 dotenv.config()
 
 const content_router = require("./routes/Content.js")
 
-const jsonParser = bodyParser.json({ limit: '20mb' }); // set the limit to 10 megabytes
+const jsonParser = bodyParser.json({ limit: '20mb' }); 
 
 app.use(jsonParser);
 
