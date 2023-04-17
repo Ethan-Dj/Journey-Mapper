@@ -4,7 +4,7 @@ import Map1 from "./Map"
 import { Map } from "mapbox-gl";
 import { useNavigate } from "react-router-dom"
 import { useLocation } from "react-router-dom";
-import createScrollSnap from 'scroll-snap'
+
 
 const Home = (props) => {
     const location = useLocation()
