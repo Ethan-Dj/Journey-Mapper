@@ -35,6 +35,12 @@ const getAllImages = (id) => {
     .where("userid", id)
 }
 
+const getAll = () => {
+    return db("testimg") 
+    .select("*")
+    // .where("journeyname", "asdfghjkl")
+}
+
 const uploadImages = (value) => {
     console.log("loading")
     return db("testimg")
@@ -45,7 +51,8 @@ module.exports = {
     getAllImages, 
     uploadImages,
     register, 
-    login
+    login, 
+    getAll
 }
 
 

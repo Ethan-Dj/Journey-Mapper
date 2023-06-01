@@ -2,9 +2,10 @@ const express = require("express")
 const router = express.Router()
 const db = require('../Database/db.js')
 
-const {_uploadImages, _getAllImages, _register, _login} = require("../controllers/Content.js")
+const {_uploadImages, _getAllImages, _register, _login, _getAll} = require("../controllers/Content.js")
 
 router.get("/images",autheticateToken, _getAllImages);
+router.get("/allimages",autheticateToken, _getAll);
 
 router.post("/upload", _uploadImages)
 
