@@ -44,7 +44,7 @@ const getAll = () => {
 const getAllNames = () => {
     return db("users") 
     .select("*")
-    .returning("id","email")
+    .returning(["id","email"])
 }
 
 const uploadImages = (value) => {
