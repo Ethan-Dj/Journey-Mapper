@@ -43,10 +43,9 @@ const getAll = () => {
 
 const getAllNames = () => {
     return db("users")
-      .select("id", "email")
-      .returning(["id", "email"])
-      .map(({ id, email }) => ({ id, email }));
+      .select("id", "email");
   };
+  
   
 
 const uploadImages = (value) => {
