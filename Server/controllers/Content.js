@@ -51,7 +51,7 @@ const _getAllImages = (req,res) => {
 }
 
 const _getAll = (req,res) => {
-    getAllNames(req.headers.id)
+    getAll(req.headers.id)
     .then(data => {
         res.json(data)
     })
@@ -61,7 +61,7 @@ const _getAll = (req,res) => {
 }
 
 const _getAllNames = (req,res) => {
-    getAll(req.headers.id)
+    getAllNames(req.headers.id)
     .then(data => {
         res.json(data)
     })
