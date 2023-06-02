@@ -1,4 +1,4 @@
-const {getAllImages, uploadImages, register, login, getAll} = require("../modules/Content.js")
+const {getAllImages, uploadImages, register, login, getAll, getAllNames} = require("../modules/Content.js")
 const { cloudinary } = require('../utils/cloudinary');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -51,6 +51,16 @@ const _getAllImages = (req,res) => {
 }
 
 const _getAll = (req,res) => {
+    getAllNames(req.headers.id)
+    .then(data => {
+        res.json(data)
+    })
+    .catch(err =>
+        console.log(err)
+    )
+}
+
+const _getAllNames = (req,res) => {
     getAll(req.headers.id)
     .then(data => {
         res.json(data)
@@ -98,5 +108,6 @@ module.exports = {
     _getAllImages,
     _register,
     _login, 
-    _getAll
+    _getAll, 
+    _getAllNames
 }
