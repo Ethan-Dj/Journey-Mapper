@@ -42,10 +42,12 @@ const getAll = () => {
 }
 
 const getAllNames = () => {
-    return db("users") 
-    .select("*")
-    .returning(["id","email"])
-}
+    return db("users")
+      .select("id", "email")
+      .returning(["id", "email"])
+      .map(({ id, email }) => ({ id, email }));
+  };
+  
 
 const uploadImages = (value) => {
     console.log("loading")
