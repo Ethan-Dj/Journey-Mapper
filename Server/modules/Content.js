@@ -42,7 +42,7 @@ const getAll = () => {
 }
 
 const getAllNames = () => {
-    return db("user") 
+    return db("users") 
     .select("*")
     .returning("id","email")
 }
