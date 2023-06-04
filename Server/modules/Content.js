@@ -42,17 +42,14 @@ const getAll = () => {
 }
 
 const getAllNames = async (ids) => {
-    try {
-      const result = await db("users")
+    let emptyData = []
+    ids.forEach(elem => {
+        const result = db("users")
         .select("id", "email")
-        .whereIn("id", ids);
-        
-      return result;
-    } catch (error) {
-      // Handle the error appropriately
-      console.error(error);
-      throw error;
-    }
+        .where("id", elem);
+        emptyData.push(result)
+    });
+
   };
   
   
