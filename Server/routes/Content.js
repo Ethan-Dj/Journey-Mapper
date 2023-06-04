@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 const db = require('../Database/db.js')
 
-const {_uploadImages, _getAllImages, _register, _login, _getAll, _getAllNames} = require("../controllers/Content.js")
+const {_uploadImages, _getAllImages, _register, _login, _getAll, } = require("../controllers/Content.js")
 
 router.get("/images",autheticateToken, _getAllImages);
 router.get("/allimages",autheticateToken, _getAll);
-router.get("/allnames",autheticateToken, _getAllNames);
+// router.get("/allnames",autheticateToken, _getAllNames);
 
 router.post("/upload", _uploadImages)
 
