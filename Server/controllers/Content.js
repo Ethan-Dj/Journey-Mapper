@@ -1,4 +1,4 @@
-const {getAllImages, uploadImages, register, login, getAll, } = require("../modules/Content.js")
+const {getAllImages, uploadImages, register, login, getAll, getAllNames} = require("../modules/Content.js")
 const { cloudinary } = require('../utils/cloudinary');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -60,37 +60,16 @@ const _getAll = (req,res) => {
     )
 }
 
-// const _getAllNames = (req,res) => {
-//     getAllNames(req.headers.ids)
-//     .then(data => {
-//         res.json(data)
-//     })
-//     .catch(err =>
-//         console.log(err)
-//     )
-// }
-
-const _getAllNames = (req, res) => {
-    try {
-      const ids = req.body.ids; // Assuming IDs are passed in the request body
-  
-      if (!Array.isArray(ids)) {
-        throw new Error('IDs should be provided as an array.');
-      }
-  
-      getAllNames(ids)
-        .then(data => {
-          res.json(data);
-        })
-        .catch(error => {
-          console.error(error);
-          res.status(500).json({ error: 'Internal server error' });
-        });
-    } catch (error) {
-      console.error(error);
-      res.status(400).json({ error: 'Bad request' });
-    }
-  };
+const _getAllNames = (req,res) => {
+    getAllNames()
+    console.log(req.headers)
+    .then(data => {
+        res.json(data)
+    })
+    .catch(err =>
+        console.log(err)
+    )
+}
 
 const _uploadImages = async(req,res) => {
     try {

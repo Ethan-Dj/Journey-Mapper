@@ -41,29 +41,10 @@ const getAll = () => {
     // .where("journeyname", "asdfghjkl")
 }
 
-const getAllNames = async (ids) => {
-    try {
-      let emptyData = [];
-      
-      for (const elem of ids) {
-        const result = await db("users")
-          .select("id", "email")
-          .where("id", elem);
-        
-        emptyData.push(result);
-      }
-      
-      return emptyData;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+const getAllNames = () => {
+    return db("users")
+      .select("id", "email");
   };
-  
-
-  
-  
-  
 
 const uploadImages = (value) => {
     console.log("loading")
