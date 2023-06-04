@@ -54,7 +54,7 @@ const _getAll = (req,res) => {
     getAll(req.headers.id)
     .then(data => {
         const result = JSON.stringify(data)
-        const reversed = result.reverse()
+        const reversed = data.reverse();
         const groupedArrays = [];
         const objectsById = {};
         const groupedObjects = [];
@@ -67,7 +67,7 @@ const _getAll = (req,res) => {
             groupedObjects.push([obj]);
             }
         });
-        res.groupedObjects
+        res.json(groupedObjects);
     })
     .catch(err =>
         console.log(err)
