@@ -62,7 +62,7 @@ const _getAll = (req,res) => {
 
 const _getAllNames = (req,res) => {
     getAllNames()
-    console.log(req.headers)
+    console.log(req.headers.ids)
     .then(data => {
         res.json(data)
     })
