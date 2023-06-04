@@ -63,7 +63,7 @@ const _getAll = (req,res) => {
 const _getAllNames = (req,res) => {
     getAllNames()
     .then(data => {
-        console.log(data)
+        console.log(JSON.stringify(data));
         console.log("fucking hell")
         res.json(data)
     })
