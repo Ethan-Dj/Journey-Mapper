@@ -53,7 +53,21 @@ const _getAllImages = (req,res) => {
 const _getAll = (req,res) => {
     getAll(req.headers.id)
     .then(data => {
-        res.json(data)
+        const result = JSON.stringify(data)
+        const reversed = result.reverse()
+        const groupedArrays = [];
+        const objectsById = {};
+        const groupedObjects = [];
+        reversed.forEach(obj => {
+            const key = `${obj.userid}-${obj.journeyname}`;
+            const group = groupedObjects.find(g => g[0] && g[0].userid === obj.userid && g[0].journeyname === obj.journeyname);
+            if (group) {
+            group.push(obj)
+            } else if (groupedObjects.length < 15) {
+            groupedObjects.push([obj]);
+            }
+        });
+        res.json(groupedObjects)
     })
     .catch(err =>
         console.log(err)
