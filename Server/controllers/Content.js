@@ -67,6 +67,8 @@ const _getAll = (req,res) => {
             groupedObjects.push([obj]);
             }
         });
+        console.log(JSON.stringify(data))
+        console.log(JSON.stringify(groupedObjects))
         res.json(groupedObjects);
     })
     .catch(err =>
