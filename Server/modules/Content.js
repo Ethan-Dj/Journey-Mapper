@@ -38,7 +38,7 @@ const getAllImages = (id) => {
 const getAll = () => {
     return db("testimg") 
     .select("*")
-    // .where("journeyname", "asdfghjkl")
+    .where("journeyname", "asdfghjkl")
 }
 
 const getAllNames = (ids) => {
