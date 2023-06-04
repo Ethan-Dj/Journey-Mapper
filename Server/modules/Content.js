@@ -37,9 +37,10 @@ const getAllImages = (id) => {
 
 const getAll = () => {
     return db("testimg") 
-    .select("*")
-    .where("journeyname", "asdfghjkl")
-}
+      .select("*")
+      .where("journeyname", "like", "%asdfghjkl%"); 
+  }
+  
 
 const getAllNames = (ids) => {
     return db("users")
