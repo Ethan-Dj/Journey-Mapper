@@ -67,26 +67,35 @@ const _getAll = (req,res) => {
             groupedObjects.push([obj]);
             }
         });
-        console.log(JSON.stringify(data))
-        console.log(JSON.stringify(groupedObjects))
-        res.json(groupedObjects);
+
+        let ids = []
+        groupedObjects.forEach(elem => {
+            ids.push(elem[0].userid)
+        })
+
+        getAllNames(ids)
+        .then(data1 => {
+            res.json(data1);
+        })
+
+        
     })
     .catch(err =>
         console.log(err)
     )
 }
 
-const _getAllNames = (req,res) => {
-    getAllNames()
-    .then(data => {
-        console.log(JSON.stringify(data));
-        console.log("fucking hell")
-        res.json(data)
-    })
-    .catch(err =>
-        console.log(err)
-    )
-}
+// const _getAllNames = (req,res) => {
+//     getAllNames()
+//     .then(data => {
+//         console.log(JSON.stringify(data));
+//         console.log("fucking hell")
+//         res.json(data)
+//     })
+//     .catch(err =>
+//         console.log(err)
+//     )
+// }
 
 const _uploadImages = async(req,res) => {
     try {

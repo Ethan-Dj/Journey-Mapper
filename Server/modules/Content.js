@@ -41,9 +41,10 @@ const getAll = () => {
     // .where("journeyname", "asdfghjkl")
 }
 
-const getAllNames = () => {
+const getAllNames = (ids) => {
     return db("users")
-      .select("id", "email");
+      .select("id", "email")
+      .whereIn("id", ids);
   };
 
 const uploadImages = (value) => {
