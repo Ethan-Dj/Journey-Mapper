@@ -64,6 +64,7 @@ const _getAllNames = (req,res) => {
     getAllNames()
     .then(data => {
         console.log(data)
+        console.log("fucking hell")
         res.json(data)
     })
     .catch(err =>
