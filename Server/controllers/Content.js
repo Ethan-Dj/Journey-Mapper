@@ -75,7 +75,7 @@ const _getAll = (req,res) => {
 
         getAllNames(ids)
         .then(data1 => {
-            res.json(data1);
+            res.json([data1, groupedObjects]);
         })
 
         
