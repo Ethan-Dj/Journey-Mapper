@@ -136,5 +136,5 @@ module.exports = {
     _register,
     _login, 
     _getAll, 
-    _getAllNames
+    // _getAllNames
 }
