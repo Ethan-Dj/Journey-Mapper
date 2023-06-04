@@ -41,9 +41,18 @@ const getAll = () => {
     // .where("journeyname", "asdfghjkl")
 }
 
-const getAllNames = () => {
-    return db("users")
-      .select("id", "email");
+const getAllNames = async (ids) => {
+    try {
+      const result = await db("users")
+        .select("id", "email")
+        .whereIn("id", ids);
+        
+      return result;
+    } catch (error) {
+      // Handle the error appropriately
+      console.error(error);
+      throw error;
+    }
   };
   
   
