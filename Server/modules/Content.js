@@ -33,12 +33,14 @@ const getAllImages = (id) => {
     return db("testimg") 
     .select("*")
     .where("userid", id)
+    .orderBy("id")
 }
 
 const getAll = () => {
     return db("testimg") 
       .select("*")
-      .where("journeyname", "like", "%asdfghjkl%"); 
+      .where("journeyname", "like", "%asdfghjkl%")
+      .orderBy("id")
   }
   
 
