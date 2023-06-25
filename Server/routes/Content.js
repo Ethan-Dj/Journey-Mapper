@@ -15,9 +15,9 @@ router.post("/register", _register)
 router.post("/login", _login )
 
 
-router.post("/likeA", _likeA )
-router.post("/likeB", _likeB )
-router.post("/likeC", _likeC )
+router.patch("/likeA", _likeA )
+router.patch("/likeB", _likeB )
+router.patch("/likeC", _likeC )
 
 module.exports = router
 
