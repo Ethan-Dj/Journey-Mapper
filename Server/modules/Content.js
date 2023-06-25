@@ -59,19 +59,19 @@ const uploadImages = (value) => {
 const likeA = (value, journeyname) => {
     return db("testimg")
       .where("journeyname", "=", journeyname)
-      .update({ LikeA: value });
+      .update({ likea: value });
   };
   
   const likeB = (value, journeyname) => {
     return db("testimg")
       .where("journeyname", "=", journeyname)
-      .update({ LikeB: value });
+      .update({ likeb: value });
   };
   
   const likeC = (value, journeyname) => {
     return db("testimg")
       .where("journeyname", "=", journeyname)
-      .update({ likeC: value });
+      .update({ likec: value });
   };
 
 module.exports = {
