@@ -1,7 +1,38 @@
-const {getAllImages, uploadImages, register, login, getAll, getAllNames} = require("../modules/Content.js")
+const {getAllImages, uploadImages, register, login, getAll, getAllNames, likeA, likeB, likeC} = require("../modules/Content.js")
 const { cloudinary } = require('../utils/cloudinary');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+
+
+const _likeA = async (req, res) => {
+    try {
+      await likeA(req.body.value, req.body.journeyname);
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "An error occurred" });
+    }
+  };
+  
+  const _likeB = async (req, res) => {
+    try {
+      await likeB(req.body.value, req.body.journeyname);
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "An error occurred" });
+    }
+  };
+  
+  const _likeC = async (req, res) => {
+    try {
+      await likeC(req.body.value, req.body.journeyname);
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "An error occurred" });
+    }
+  };
 
 
 const _login = async (req, res) => {
@@ -113,7 +144,10 @@ const _uploadImages = async(req,res) => {
             "imgtime": req.body.imgTime,
             "imgtimedisplay":req.body.imgTimeDisplay,
             "journeyname": req.body.journeyName,
-            "userid" : req.body.userId
+            "userid" : req.body.userId,
+            "likea":0,
+            "likeb":0,
+            "likec":0
         }
         uploadImages(obj)
         .then(data => {
@@ -136,5 +170,8 @@ module.exports = {
     _register,
     _login, 
     _getAll, 
+    _likeA,
+    _likeB,
+    _likeC
     // _getAllNames
 }

@@ -56,13 +56,34 @@ const uploadImages = (value) => {
     .insert(value)
 }
 
+const likeA = (value, journeyname) => {
+    return db("testimg")
+      .where("journeyname", "=", journeyname)
+      .update({ LikeA: value });
+  };
+  
+  const likeB = (value, journeyname) => {
+    return db("testimg")
+      .where("journeyname", "=", journeyname)
+      .update({ LikeB: value });
+  };
+  
+  const likeC = (value, journeyname) => {
+    return db("testimg")
+      .where("journeyname", "=", journeyname)
+      .update({ likeC: value });
+  };
+
 module.exports = {
     getAllImages, 
     uploadImages,
     register, 
     login, 
     getAll, 
-    getAllNames
+    getAllNames,
+    likeA,
+    likeB,
+    likeC
 }
 
 

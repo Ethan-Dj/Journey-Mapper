@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const db = require('../Database/db.js')
 
-const {_uploadImages, _getAllImages, _register, _login, _getAll, } = require("../controllers/Content.js")
+const {_uploadImages, _getAllImages, _register, _login, _getAll, _likeA, _likeB, _likeC } = require("../controllers/Content.js")
 
 router.get("/images",autheticateToken, _getAllImages);
 router.get("/allimages",autheticateToken, _getAll);
@@ -13,6 +13,11 @@ router.post("/upload", _uploadImages)
 router.post("/register", _register)
 
 router.post("/login", _login )
+
+
+router.post("/likeA", _likeA )
+router.post("/likeB", _likeB )
+router.post("/likeC", _likeC )
 
 module.exports = router
 
